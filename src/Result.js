@@ -52,7 +52,7 @@ const Result = ({result}) => {
             :
                 <>
                     <p>{info.description}</p>
-                    <a href={info.homepage} target="_blank">Podcast Homepage</a>
+                    <a href={info.homepage} target="_blank" rel="noreferrer">Podcast Homepage</a>
                 </>
             }
             <br />

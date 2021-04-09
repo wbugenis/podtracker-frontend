@@ -12,7 +12,7 @@ const Podcast = ({podcast}) => {
     }, [])
 
     const episodeComps = episodes.map(episode => <Episode episode={episode} key={episode.id} />)
-    return <div>
+    return <div className="podcast-div">
         <img src={podcast_img_url} alt={title}/>
         <h4>{title}</h4>
         <p>{description}</p>

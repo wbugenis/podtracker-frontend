@@ -11,3 +11,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.main {
+  display: grid;
+  grid-template-areas: "nav content";
+  grid-template-columns: 200px 1fr;
+}
+
+aside {
+  grid-area: nav;
+  display:inline-flex;
+  position: sticky;
+  height: 500px;
+  top: 0;
+  padding: 2em;
+  flex-direction: column;
+}
+
+section {
+  grid-area: content;
+}
