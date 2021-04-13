@@ -58,6 +58,7 @@ const Result = ({user, result}) => {
             }
             <br />
             <button onClick={trackPodcast}>Track Podcast</button>
+            <a href={result.feedUrl}>rss</a>
         </li>
     )
 }

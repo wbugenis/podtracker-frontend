@@ -15,7 +15,6 @@ const Player = ({currentTrack, setCurrentTrack}) => {
                 controls={[
                     'spacer',
                     'playpause',
-                    'seekforward',
                     'mute',
                     'spacer',
                     'progress'

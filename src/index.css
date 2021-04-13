@@ -29,12 +29,27 @@ aside {
 }
 
 section {
+  /* display: flex; */
   grid-area: content;
 }
 
 #player-div {
+  /* grid-area: content; */
   position:sticky;
   top:0;
   z-index:1;
   background-color:white;
+}
+
+.episode-holder{
+    border: 1px solid;
+    border-radius: 25px;
+    overflow-y: scroll;
+    overflow-x: hidden; 
+    height: 25em;
+    z-index: 1;
+}
+
+img {
+  width: 300px;
 }

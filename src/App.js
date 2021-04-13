@@ -78,8 +78,8 @@ function App() {
     <>
     {user ? 
       <div className="main">
-        <Navbar setUser={setUser}/>
-        <section>
+        <Navbar setUser={setUser}/> 
+        <section> 
           <Player currentTrack={currentTrack} setCurrentTrack={setCurrentTrack}/>
           <Switch>
             <Route exact path ="/mypodcasts">

@@ -18,7 +18,7 @@ const MyPodcasts = ({user, setCurrentTrack}) => {
             .then(()=> setSubscriptions(subscriptions.filter(subscription => subscription.id !== sub_id)))
     }
 
-    const podcastComps = subscriptions.map(subscription => <Podcast unsubscribe={unsubscribe} sub_id={subscription.id} podcast={subscription.podcast} key={subscription.podcast.title} setCurrentTrack={setCurrentTrack}/>)
+    const podcastComps = subscriptions.map(subscription => <Podcast user={user} unsubscribe={unsubscribe} sub_id={subscription.id} podcast={subscription.podcast} key={subscription.podcast.title} setCurrentTrack={setCurrentTrack}/>)
     
     return (
         <>

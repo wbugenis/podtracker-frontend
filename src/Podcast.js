@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from "react"
 import Episode from "./Episode"
 
-const Podcast = ({unsubscribe, podcast, sub_id, setCurrentTrack}) => {
+const Podcast = ({user, unsubscribe, podcast, sub_id, setCurrentTrack}) => {
     const {id, title, rss_feed, description, podcast_img_url, podcast_home_url} = podcast
     const [episodes, setEpisodes] = useState([])
-    
 
     useEffect(() => {
         fetch(`http://localhost:3000/podcasts/${id}/episodes`)
@@ -12,7 +11,7 @@ const Podcast = ({unsubscribe, podcast, sub_id, setCurrentTrack}) => {
             .then(episodes => setEpisodes(episodes))
     }, [])
 
-    const episodeComps = episodes.map(episode => <Episode episode={episode} key={episode.title} setCurrentTrack={setCurrentTrack}/>)
+    const episodeComps = episodes.map(episode => <Episode user={user} episode={episode} key={episode.title} setCurrentTrack={setCurrentTrack}/>)
 
     return <div className="podcast-div">
         <img src={podcast_img_url} alt={title}/>
