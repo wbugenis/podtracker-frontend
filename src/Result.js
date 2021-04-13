@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 
-const Result = ({result}) => {
+const Result = ({user, result}) => {
     const [info, setInfo] = useState({description: "", homepage:""})
 
     //Fetch info not available from iTunes from podcast's RSS feed
@@ -29,14 +29,15 @@ const Result = ({result}) => {
             description: info.description,
             podcast_home_url: info.homepage
         }
+        console.log(podcast)
 
-        fetch("http://localhost:3000/podcasts", {
+        fetch(`http://localhost:3000/subscriptions`, {
             method: "POST", 
             headers: {
                 'Content-Type':"application/json",
                 Accept:'application/json'
             },
-            body: JSON.stringify(podcast)
+            body: JSON.stringify({podcast, user})
         })
             .then(r => r.json())
             .then(newPod => console.log(`now tracking ${newPod.title}`))
