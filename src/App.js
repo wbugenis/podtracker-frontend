@@ -75,12 +75,14 @@ function App() {
   }
 
   return (
-    <>
-    {user ? 
-      <div className="main">
+    <div className="main">
+      {user ? <>
+        <div className="logo">
+          <h1 style={{fontStyle:"italic"}}>podtracker</h1>
+        </div>
         <Navbar setUser={setUser}/> 
+        <Player currentTrack={currentTrack} setCurrentTrack={setCurrentTrack}/>
         <section> 
-          <Player currentTrack={currentTrack} setCurrentTrack={setCurrentTrack}/>
           <Switch>
             <Route exact path ="/mypodcasts">
               <MyPodcasts user={user} setCurrentTrack={setCurrentTrack}/>
@@ -96,7 +98,7 @@ function App() {
             </Route>
           </Switch>
         </section>
-      </div>
+        </>
       :
       <div className="welcome-div">
         <Switch>
@@ -112,7 +114,7 @@ function App() {
         </Switch>
       </div>
       }
-    </>
+    </div>
   );
 }
 

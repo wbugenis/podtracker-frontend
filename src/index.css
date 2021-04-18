@@ -14,8 +14,11 @@ code {
 
 .main {
   display: grid;
-  grid-template-areas: "nav content";
+  grid-template-areas: 
+    "logo player" 
+    "nav content";
   grid-template-columns: 200px 1fr;
+  grid-template-rows: 100px 2fr;
 }
 
 aside {
@@ -29,16 +32,20 @@ aside {
 }
 
 section {
-  /* display: flex; */
   grid-area: content;
 }
 
 #player-div {
-  /* grid-area: content; */
+  grid-area: player;
   position:sticky;
   top:0;
   z-index:1;
   background-color:white;
+}
+
+.welcome-div {
+  grid-area: content;
+  align-items: center;
 }
 
 .episode-holder{

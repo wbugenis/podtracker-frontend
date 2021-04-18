@@ -10,16 +10,17 @@ const Login = ({handleLogin}) =>{
     }
 
     return (
-        <>  
-            <h1>Login Page</h1>
+        <>
+            <h1 style={{fontStyle:'italic'}}>podtracker</h1>
+            <h3 style={{marginLeft:'50px'}}>Login</h3>
             <form onSubmit={handleSubmit}>
                 <label>
-                    Name
-                    <input type="text" value={username} onChange={e=>setUsername(e.target.value)}/>
+                    <input type="text" value={username} placeholder="Enter Your Name" onChange={e=>setUsername(e.target.value)}/>
                     <input type="submit" value="Login"/>
                 </label>
             </form>
-            <Link to="/signup">Register</Link>
+            <br />
+            <Link style={{marginLeft:'50px'}} to="/signup">Register</Link>
         </>
     )
 }
