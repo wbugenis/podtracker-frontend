@@ -1,5 +1,5 @@
-import React, {useState} from "react"
-import {Switch, Route, Redirect} from "react-router-dom"
+import React, {useState, useEffect } from "react"
+import {Switch, Route, Redirect, useHistory} from "react-router-dom"
 
 import Navbar from './Navbar'
 import Search from './Search'
@@ -9,74 +9,41 @@ import Signup from './Signup'
 import Player from './Player'
 
 function App() {
-  const [user, setUser] = useState(false)
+  const [user, setUser] = useState({id:null})
   const [currentTrack, setCurrentTrack] = useState({title:"", src: "", type: ""})
+  const history = useHistory()
+  console.log(user)
 
-  const handleLogin = (username) =>{
-      fetch("http://localhost:3000/login", {
-          method: "POST",
-          headers: {
-            'Content-Type':'application/json',
-            Accept:'application/json'
-          },
-          body: JSON.stringify({username: username})
-      })
-            .then(r => {
-              console.log(r)
-              return r.json().then((data) => {
-                if (r.ok) {
-                  return data
-                } else {
-                  console.log("not ok", data)
-                  throw data
-                }
-              })
-            })
-            .then(user => {
-              console.log(user)
-              if (user){
-                setUser(user)
-              } else {
-                alert("Try again")
-              }
-            })
-            .catch(data => console.log(data))
-  }
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      console.log("no token")
+      history.push("/login");
+    }
+  }, [])
 
-  const handleSignup = (username) =>{
-    fetch("http://localhost:3000/users", {
-        method: "POST",
+  useEffect(() => {
+    
+    const token = localStorage.getItem("token");
+    console.log("got token")
+    if (token) {
+      console.log(token)
+      fetch(`http://localhost:3000/me`, {
         headers: {
-          'Content-Type':'application/json',
-          Accept:'application/json'
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({username: username})
-    })
-        .then(r => {
-          return r.json().then((data) => {
-            if (r.ok) {
-              console.log("ok", data)
-              return data
-            } else {
-              console.log("not ok", data)
-              throw data
-            }
-          })
-        })
-        .then(user => {
-          console.log("2nd then", user)
-          if (user){
-            setUser(user)
-          } else {
-            alert("Try again")
-          }
-        })
-        .catch(data => console.log(data))
-  }
+      })
+        .then((r) => r.json())
+        .then((user) => {
+          setUser(user);
+
+          console.log(user);
+        });
+    }
+  }, []);
 
   return (
     <div className="main">
-      {user ? <>
+      {user.id ? <>
         <div className="logo">
           <h1 style={{fontStyle:"italic"}}>podtracker</h1>
         </div>
@@ -101,12 +68,13 @@ function App() {
         </>
       :
       <div className="welcome-div">
+        <h1 style={{fontStyle:'italic', color:"forestgreen"}}>podtracker</h1>
         <Switch>
           <Route exact path="/login">
-            <Login handleLogin={handleLogin}/>
+            <Login setUser={setUser}/>
           </Route>
           <Route exact path="/signup">
-            <Signup handleSignup={handleSignup}/>
+            <Signup setUser={setUser}/>
           </Route>
           <Route exact path="/*">
               <Redirect to={{pathname: "/login"}}/>

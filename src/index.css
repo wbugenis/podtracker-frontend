@@ -46,6 +46,7 @@ section {
 .welcome-div {
   grid-area: content;
   align-items: center;
+  line-height: 1.5;
 }
 
 .episode-holder{
