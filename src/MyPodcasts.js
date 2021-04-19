@@ -1,14 +1,15 @@
 import React, {useState, useEffect} from "react"
 import Podcast from "./Podcast"
 
-const MyPodcasts = ({user, setCurrentTrack}) => {
+const MyPodcasts = ({user, playTrack, queueTrack}) => {
     const [subscriptions, setSubscriptions] = useState([])
-    console.log(subscriptions)
-
+   
     useEffect(()=> {
         fetch(`http://localhost:3000/user/${user.id}/subscriptions`)
             .then(r => r.json())
-            .then(subscriptions => setSubscriptions(subscriptions))
+            .then(subscriptions => {
+                setSubscriptions(subscriptions)
+            })
     }, [])
 
     const unsubscribe = (sub_id) => {
@@ -18,11 +19,17 @@ const MyPodcasts = ({user, setCurrentTrack}) => {
             .then(()=> setSubscriptions(subscriptions.filter(subscription => subscription.id !== sub_id)))
     }
 
-    const podcastComps = subscriptions.map(subscription => <Podcast user={user} unsubscribe={unsubscribe} sub_id={subscription.id} podcast={subscription.podcast} key={subscription.podcast.title} setCurrentTrack={setCurrentTrack}/>)
+    const podcastComps = subscriptions.map(subscription => <Podcast user={user} unsubscribe={unsubscribe} sub_id={subscription.id} podcast={subscription.podcast} key={subscription.podcast.title} playTrack={playTrack} queueTrack={queueTrack} />)
     
     return (
         <>
-            {podcastComps}
+            {subscriptions.length > 0 ?
+                <>
+                    {podcastComps}
+                </>
+                :
+                <h2>You haven't subscribed to any podcasts yet!</h2>
+            }
         </>
     )
 }

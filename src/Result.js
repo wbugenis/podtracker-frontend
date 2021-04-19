@@ -1,8 +1,8 @@
 import React, {useState} from "react"
 
-const Result = ({user, result}) => {
+const Result = ({user, result, setMessage}) => {
     const [info, setInfo] = useState({description: "", homepage:""})
-
+    
     //Fetch info not available from iTunes from podcast's RSS feed
     const showInfo = () => {
         const rss = result.feedUrl
@@ -40,7 +40,7 @@ const Result = ({user, result}) => {
             body: JSON.stringify({podcast, user})
         })
             .then(r => r.json())
-            .then(newPod => console.log(`now tracking ${newPod.title}`))
+            .then(newPod => setMessage(`Subscribed to ${newPod.title}`))
     }
 
     return (

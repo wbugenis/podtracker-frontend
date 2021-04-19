@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react"
 
-const Episode = ({user, episode, userEpisodes, podcastId, setCurrentTrack}) => {
+const Episode = ({user, episode, userEpisodes, podcastId, playTrack, artwork, artist, queueTrack}) => {
     const [showDesc, setShowDesc] = useState(false)
     const [userEpisode, setUserEpisode] = useState({listened: false, current_time:0, id:null})
-    const {title, description, runtime, filepath, pubDate} = episode
+    const {title, description, runtime, url, pubDate} = episode
     
     useEffect(() => {
         const myEp = userEpisodes.find(userEpisode => userEpisode.title === title)
@@ -47,8 +47,9 @@ const Episode = ({user, episode, userEpisodes, podcastId, setCurrentTrack}) => {
             <div>{title}</div>
             <div onClick={()=>setShowDesc(!showDesc)}>+ {showDesc ? <>{description}</> : null } </div>
             <div>{runtime} | {pubDate}</div>
-            <button onClick={()=>setCurrentTrack({title:title, src:filepath})}>PLAY</button>
+            <button onClick={()=>playTrack({title, url, artwork, artist})}>PLAY</button>
             <br/>
+            <button onClick={()=>queueTrack({title, url, artwork, artist})}>QUEUE</button>
             <button onClick={updateListened}>Listened</button>
         </li>
     )

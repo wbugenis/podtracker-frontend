@@ -2,7 +2,7 @@ import React, {useState} from "react"
 import SearchBar from "./SearchBar"
 import ResultsContainer from "./ResultsContainer"
 
-const Search = ({user}) => {
+const Search = ({user, setMessage}) => {
     const [searchTerm, setSearchTerm] = useState("")
     const [results, setResults] = useState([])
 
@@ -22,7 +22,7 @@ const Search = ({user}) => {
             {searchTerm === "" ? null : 
             <>
                 <h2>Search results for "{searchTerm}"</h2>
-                <ResultsContainer user={user} results={results} searchTerm={searchTerm} />
+                <ResultsContainer user={user} results={results} searchTerm={searchTerm} setMessage={setMessage} />
             </>
             }
         </div>

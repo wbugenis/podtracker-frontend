@@ -3,12 +3,12 @@ import Parser from 'rss-parser'
 //https://www.npmjs.com/package/rss-parser
 import Episode from "./Episode"
 
-const Podcast = ({user, unsubscribe, podcast, sub_id, setCurrentTrack}) => {
-    const {id, title, rss_feed, description, podcast_img_url, podcast_home_url} = podcast
+const Podcast = ({user, unsubscribe, podcast, sub_id, playTrack, queueTrack}) => {
+    const {id, title, description, podcast_img_url, podcast_home_url} = podcast
     const [episodes, setEpisodes] = useState([])
     const [userEpisodes, setUserEpisodes] = useState([])
     const [showEpisodes, setShowEpisodes] = useState(false)
-    console.log(userEpisodes)
+
     const prettyTime = (timeStr) => {
         if (timeStr){
             if (timeStr.includes(':')){
@@ -52,14 +52,25 @@ const Podcast = ({user, unsubscribe, podcast, sub_id, setCurrentTrack}) => {
                         description:item.content||"Not provided",
                         runtime:prettyTime(item.itunes.duration),
                         pubDate:item.pubDate.slice(0,16)||"Not provided",
-                        filepath:(item.enclosure ? item.enclosure.url : "Not provided")
+                        url:(item.enclosure ? item.enclosure.url : "Not provided")
                     })
                 })
                 setEpisodes(episodes)
             })
     }, [])
 
-    const episodeComps = episodes.map(episode => <Episode user={user} episode={episode} key={episode.title} setCurrentTrack={setCurrentTrack} podcastId={podcast.id} userEpisodes={userEpisodes}/>)
+    const episodeComps = episodes.map(episode => 
+    <Episode 
+        user={user} 
+        episode={episode} 
+        key={episode.title} 
+        playTrack={playTrack} 
+        podcastId={podcast.id} 
+        userEpisodes={userEpisodes} 
+        artwork={[{src:podcast_img_url, sizes:'196x196', type:'image/jpg'}]}
+        artist={podcast.title} 
+        queueTrack={queueTrack}
+    />)
     
     return (
         <div className="podcast-div">

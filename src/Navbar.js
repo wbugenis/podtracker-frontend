@@ -1,7 +1,13 @@
 import React from "react"
-import { NavLink, useHistory} from "react-router-dom"
+import { NavLink } from "react-router-dom"
 
 const Navbar = ({setUser}) => {
+
+    const logout = () => {
+        localStorage.removeItem("token");
+        setUser({id: null})
+    }
+
     return (
         <aside>
             <NavLink to="/mypodcasts" className="navlink">
@@ -16,7 +22,7 @@ const Navbar = ({setUser}) => {
                 Settings
             </NavLink> */}
 
-            <NavLink to="/login" onClick={()=> setUser(false)}>
+            <NavLink to="/login" onClick={()=> logout()}>
               Log Out
             </NavLink>
 
