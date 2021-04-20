@@ -2,8 +2,9 @@ import React, {useState, useEffect} from "react"
 import Parser from 'rss-parser'
 //https://www.npmjs.com/package/rss-parser
 import Episode from "./Episode"
+import { List, ListSubheader } from "@material-ui/core"
 
-const Podcast = ({user, unsubscribe, podcast, sub_id, playTrack, queueTrack}) => {
+const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage }) => {
     const {id, title, description, podcast_img_url, podcast_home_url} = podcast
     const [episodes, setEpisodes] = useState([])
     const [userEpisodes, setUserEpisodes] = useState([])
@@ -63,13 +64,12 @@ const Podcast = ({user, unsubscribe, podcast, sub_id, playTrack, queueTrack}) =>
     <Episode 
         user={user} 
         episode={episode} 
-        key={episode.title} 
-        playTrack={playTrack} 
+        key={episode.title}
+        setPlaylist={setPlaylist}
         podcastId={podcast.id} 
         userEpisodes={userEpisodes} 
         artwork={[{src:podcast_img_url, sizes:'196x196', type:'image/jpg'}]}
         artist={podcast.title} 
-        queueTrack={queueTrack}
     />)
     
     return (
@@ -79,11 +79,19 @@ const Podcast = ({user, unsubscribe, podcast, sub_id, playTrack, queueTrack}) =>
             <h4>{title}</h4>
             <p>{description}</p>
             <a href={podcast_home_url} target="_blank" rel="noreferrer">Homepage</a>
+            <br/>
             <button onClick={()=>setShowEpisodes(!showEpisodes)}>Show Episodes</button> 
             {showEpisodes ? 
-                <ul className="episode-holder">
+                <List 
+                    component="nav"
+                    aria-labelledby="nested-list-subheader"
+                    subheader={
+                    <ListSubheader component="div" id="nested-list-subheader">
+                        Episodes
+                    </ListSubheader>}
+                >
                     {episodeComps}
-                </ul>
+                </List>
                 :
                 null
             }

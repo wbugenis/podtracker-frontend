@@ -58,6 +58,10 @@ section {
     z-index: 1;
 }
 
-img {
+.podcast-div img {
   width: 300px;
+}
+
+.material-icons:hover{
+  color:forestgreen
 }

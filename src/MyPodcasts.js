@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react"
 import Podcast from "./Podcast"
 
-const MyPodcasts = ({user, playTrack, queueTrack}) => {
+const MyPodcasts = ({user, setPlaylist, setMessage}) => {
     const [subscriptions, setSubscriptions] = useState([])
    
     useEffect(()=> {
@@ -19,7 +19,16 @@ const MyPodcasts = ({user, playTrack, queueTrack}) => {
             .then(()=> setSubscriptions(subscriptions.filter(subscription => subscription.id !== sub_id)))
     }
 
-    const podcastComps = subscriptions.map(subscription => <Podcast user={user} unsubscribe={unsubscribe} sub_id={subscription.id} podcast={subscription.podcast} key={subscription.podcast.title} playTrack={playTrack} queueTrack={queueTrack} />)
+    const podcastComps = subscriptions.map(subscription => 
+        <Podcast 
+            user={user} 
+            unsubscribe={unsubscribe} 
+            sub_id={subscription.id} 
+            podcast={subscription.podcast} 
+            key={subscription.podcast.title} 
+            setPlaylist={setPlaylist}
+            setMessage={setMessage}
+         />)
     
     return (
         <>

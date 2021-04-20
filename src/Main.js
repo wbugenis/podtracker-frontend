@@ -1,7 +1,5 @@
 import React, {useState, useEffect } from "react"
 import { Switch, Route, Redirect, useHistory } from "react-router-dom"
-
-import { usePlayerContext } from '@cassette/hooks'
 import { Snackbar, Fade } from '@material-ui/core'
 import { Alert } from '@material-ui/lab/'
 
@@ -11,13 +9,11 @@ import MyPodcasts from './MyPodcasts'
 import Login from './Login'
 import Signup from './Signup'
 import Player from './Player'
-import PlayerContextUser from './PlayerContextUser'
 
 const Main = ({setPlaylist}) => {
     const [user, setUser] = useState({id: null})
     const [message, setMessageText] = useState("")
     const [showSnack, setShowSnack] = useState(false)
-    const {paused, onTogglePause, playlist} = usePlayerContext(['paused', 'onTogglePause', 'playlist'])
     const history = useHistory()
     console.log(user)
     
@@ -55,20 +51,6 @@ const Main = ({setPlaylist}) => {
       }
     }, []);
   
-    const playTrack = (episode) => {
-        setPlaylist([episode].concat(playlist.slice(1)))
-        console.log(playlist)
-        console.log(paused)
-        setTimeout(()=> onTogglePause(false), 500)
-        console.log(paused) 
-    }
-  
-    const queueTrack = (episode) => {
-        console.log(episode)
-        console.log(playlist)
-        setPlaylist(playlist.concat(episode))
-    }
-
     const snackClose = () => {
       setMessageText("")
       setShowSnack(false)
@@ -94,13 +76,11 @@ const Main = ({setPlaylist}) => {
             <h1 style={{fontStyle:"italic"}}>podtracker</h1>
           </div>
           <Navbar setUser={setUser}/> 
-          <Player />
-          
+          <Player /> 
           <section> 
-            <PlayerContextUser />
             <Switch>
               <Route exact path ="/mypodcasts">
-                <MyPodcasts user={user} playTrack={playTrack} queueTrack={queueTrack} />
+                <MyPodcasts user={user} setPlaylist={setPlaylist} setMessage={setMessage} />
               </Route>
               <Route exact path="/search">
                 <Search user={user} setMessage={setMessage} />
