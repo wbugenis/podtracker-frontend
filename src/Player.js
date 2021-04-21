@@ -41,6 +41,7 @@ const Player = () => {
         
         <MediaPlayerControls
           playlist={playlist}
+          defaultVolume={0.2}
           defaultReplayStrategy={'none'}
           controls={[
             'spacer',

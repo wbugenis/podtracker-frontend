@@ -1,4 +1,5 @@
 body {
+  position: absolute;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -16,6 +17,8 @@ code {
 }
 
 .main {
+  position: sticky;
+  top: 0;
   width:100%;
   height:100vh;
   display: grid;
@@ -31,19 +34,14 @@ aside {
   grid-area: nav;
   display:inline-flex;
   position: sticky;
-  /* height: 500px; */
   top: 0;
   padding: 2em;
   flex-direction: column;
+  /* height: 500px; */
 }
 
 section {
-  background-color: rgba(0,0,0,0.5);
   grid-area: content;
-}
-
-.navLink {
-  color: white;
 }
 
 h4 {
@@ -54,7 +52,7 @@ h4 {
   grid-area: player;
   position:sticky;
   top:0;
-  z-index:1;
+  z-index:2;
   background-color:none;
 }
 
@@ -70,34 +68,55 @@ h4 {
   border-radius: 25px;
 }
 
-.MuiGrid-grid-xs-true {
-  flex-grow:.3;
-}
-
-.episode-grid{
-  flex-grow: .3;
-  border: 1px solid;
-  text-align: center;
+.podcast-grid {
+  background-color: rgba(0,0,0,0.5);
+  border: 2px solid;
   border-radius: 25px;
-  /* overflow-y: scroll;
-  overflow-x: hidden;  */
-  height: 280px;
-  
-  z-index: 1;
-  margin: 4px;
-  padding: 10px;
-  box-sizing: border-box;
+  margin: 10px 10px 10px 10px;
+  padding: 10px 10px 10px 10px;
+  height:315px;
+  overflow-x: auto;
 }
 
-.podcast-div img {
+.podcast-grid img {
   width: 175px;
   height: 175px;
 }
 
-.podcast-div {
-  height:300px;
+.podcast-div{
+  border: 1px solid;
+  text-align: center;
+  border-radius: 25px;
+ 
+  height:280px;
+  width:280px;
+  
+  z-index: 1;
+  margin: 1px 4px 4px 1px;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
+.episode-container {
+  height: auto;
+}
+
+.result-div {
+  overflow-y: scroll;
+  flex-direction: column;
+}
+
+.material-icons {
+  color:white;
+}
 .material-icons:hover{
   color:forestgreen
+}
+
+.description{
+  border: 1px solid;
+  border-radius: 25px;
+  width:1000px;
+  margin: 10px 0px 10px 0px;
+  padding: 10px 10px 10px 10px;
 }

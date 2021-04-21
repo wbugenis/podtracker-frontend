@@ -4,6 +4,12 @@ import { Grid } from '@material-ui/core'
 
 const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscriptions}) => {
     const [podComponents, setPodComponents] = useState(null)
+    const [showPodcasts, setShowPodcasts] = useState(true)
+    
+    const showEps = (podComps) => {
+        setShowPodcasts(false)
+        setPodComponents(podComps)
+    }
 
     useEffect(()=> {
         fetch(`http://localhost:3000/user/${user.id}/subscriptions`)
@@ -23,7 +29,7 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
             })
     }
 
-    const podcastComps = subscriptions.map(subscription => 
+    const podcastComps = subscriptions.map(subscription =>   
         <Podcast 
             user={user} 
             unsubscribe={unsubscribe} 
@@ -32,15 +38,36 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
             key={subscription.podcast.title} 
             setPlaylist={setPlaylist}
             setMessage={setMessage}
-            setPodComponents={setPodComponents}
-         />)
-    
+            showEps={showEps}
+         />
+         )
+
+    console.log(podcastComps)
+    console.log(showPodcasts)
+    console.log(subscriptions.length)
     return (
-        <>
-            {subscriptions.length > 0 ?
-                <Grid container spacing={4} className='podcast-div' >
-                    {podcastComps}
-                </Grid>
+        <> 
+            {subscriptions.length > 0 ? 
+            <>
+                {console.log("yoo")}
+                {
+                    (()=>{
+                        console.log("sup")
+                        if(showPodcasts){
+                            console.log("hi")
+                            return (
+                                <Grid container spacing={4} className='podcast-grid' style={{flexBasis:'unset',
+                                flexWrap:'nowrap', width:'1000px', margin:'0px'}}>
+                                    {podcastComps} 
+                                </Grid>
+                            )
+                        } else {
+                            console.log(false)
+                            return <button onClick={()=>setShowPodcasts(true)}>Show Podcasts</button>
+                        }
+                    })()
+                }
+            </>
                 :
                 <h2>You haven't subscribed to any podcasts yet!</h2>
             }

@@ -112,7 +112,7 @@ const Main = ({setPlaylist}) => {
         </>
         :
         <div className="welcome-div">
-          <h1 style={{fontStyle:'italic', color:"forestgreen"}}>podtracker</h1>
+          <h1 style={{fontStyle:'italic'}}>podtracker</h1>
           <Switch>
             <Route exact path="/login">
               <Login setUser={setUser} setMessage={setMessage} />

@@ -2,9 +2,9 @@ import React, {useState, useEffect} from "react"
 import Parser from 'rss-parser'
 //https://www.npmjs.com/package/rss-parser
 import Episode from "./Episode"
-import { Grid, List, ListSubheader, Typography, ButtonBase } from "@material-ui/core"
+import { Grid, List, ListSubheader } from "@material-ui/core"
 
-const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, setPodComponents }) => {
+const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, showEps}) => {
     const {id, title, description, podcast_img_url, podcast_home_url} = podcast
     const [episodes, setEpisodes] = useState([])
     const [userEpisodes, setUserEpisodes] = useState([])
@@ -75,25 +75,34 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
         
     const podComponents = (
         <>
-            <h1>{title}</h1>
-           <div id='description'>{description}></div>
+            <div class='description'>
+                <h1>{title}</h1>
+                <p>{description}</p>
+            </div>
                 <List 
                     component="nav"
                     aria-labelledby="nested-list-subheader"
+                    style={{
+                        overflowY:'scroll',
+                        backgroundColor: 'rgba(144,144,144,0.5)',
+                        borderRadius:'25px',
+                        height:'600px'
+                    }}
                     subheader={
-                    <ListSubheader component="div" id="nested-list-subheader">
+                    <ListSubheader component="div" id="nested-list-subheader" className="episode-container"
+                    >
                         Episodes
                     </ListSubheader>}
                 >
-                    {episodeComps}
+                    {episodeComps} 
                 </List>
             </>
         )
 
     return (
-        <Grid item xs zeroMinWidth className="episode-grid" onClick={()=>setPodComponents(podComponents)}>
+        <Grid item className="podcast-div"  style={{margin:'1px 4px 1px 4px', padding: '2px 2px 2px 2px'}}>
             <h4>{title}</h4>
-            <img src={podcast_img_url} alt={title}/>
+            <img src={podcast_img_url} alt={title} onClick={()=>showEps(podComponents)} />
             <br />
             <button onClick={()=>unsubscribe(title, sub_id)}>Unsubscribe</button>
             <a href={podcast_home_url} target="_blank" rel="noreferrer">Homepage</a>
