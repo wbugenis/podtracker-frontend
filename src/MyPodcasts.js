@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react"
 import Podcast from "./Podcast"
+import { Grid } from '@material-ui/core'
 
 const MyPodcasts = ({user, setPlaylist, setMessage}) => {
     const [subscriptions, setSubscriptions] = useState([])
@@ -33,9 +34,9 @@ const MyPodcasts = ({user, setPlaylist, setMessage}) => {
     return (
         <>
             {subscriptions.length > 0 ?
-                <>
+                <Grid container spacing={4} className='podcast-div' >
                     {podcastComps}
-                </>
+                </Grid>
                 :
                 <h2>You haven't subscribed to any podcasts yet!</h2>
             }

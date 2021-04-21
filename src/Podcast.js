@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react"
 import Parser from 'rss-parser'
 //https://www.npmjs.com/package/rss-parser
 import Episode from "./Episode"
-import { List, ListSubheader } from "@material-ui/core"
+import { Grid, List, ListSubheader, Typography, ButtonBase } from "@material-ui/core"
 
 const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage }) => {
     const {id, title, description, podcast_img_url, podcast_home_url} = podcast
@@ -61,22 +61,23 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage }
     }, [])
 
     const episodeComps = episodes.map(episode => 
-    <Episode 
-        user={user} 
-        episode={episode} 
-        key={episode.title}
-        setPlaylist={setPlaylist}
-        podcastId={podcast.id} 
-        userEpisodes={userEpisodes} 
-        artwork={[{src:podcast_img_url, sizes:'196x196', type:'image/jpg'}]}
-        artist={podcast.title} 
-    />)
+        <Episode 
+            user={user} 
+            episode={episode} 
+            key={episode.title}
+            setPlaylist={setPlaylist}
+            podcastId={podcast.id} 
+            userEpisodes={userEpisodes} 
+            artwork={[{src:podcast_img_url, sizes:'196x196', type:'image/jpg'}]}
+            artist={podcast.title} 
+        />)
     
     return (
-        <div className="podcast-div">
-            <img src={podcast_img_url} alt={title}/>
-            <button onClick={()=>unsubscribe(sub_id)}>Unsubscribe</button>
+        <Grid item xs zeroMinWidth className="episode-grid">
             <h4>{title}</h4>
+            <img src={podcast_img_url} alt={title}/>
+            <br />
+            <button onClick={()=>unsubscribe(sub_id)}>Unsubscribe</button>
             <p>{description}</p>
             <a href={podcast_home_url} target="_blank" rel="noreferrer">Homepage</a>
             <br/>
@@ -95,7 +96,7 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage }
                 :
                 null
             }
-        </div>
+        </Grid>
     )
 }
 

@@ -24,7 +24,7 @@ const FwdSkip = () => {
       <span
         style={{color:'white', display: 'flex', alignItems: 'center', fontSize: '36px'}}
         className="material-icons cassette__skip_button cassette__media_button" 
-        onClick={()=>onSeekComplete(currentTime+30)}>
+        onClick={()=>onSeekComplete(currentTime + 30)}>
           <div className="skip_button_inner foreground">
               forward_30
               </div>
@@ -33,9 +33,8 @@ const FwdSkip = () => {
   }
 
 const Player = () => {
-    const {playlist, onStateSnapshot} = usePlayerContext(['playlist', 'onStateSnapshot'])
+    const {playlist} = usePlayerContext(['playlist', 'onStateSnapshot'])
     console.log(playlist)
-    console.log(onStateSnapshot)
 
     // useBeforeunload((event) =>{
     //   if(playlist[0]){
@@ -50,31 +49,30 @@ const Player = () => {
     // })
 
     return (
-        <div id="player-div">
-            <button onClick={()=>console.log(onStateSnapshot())}>state</button>
-            <MediaPlayerControls
-                playlist={playlist}
-                defaultReplayStrategy={'none'}
-                controls={[
-                    'spacer',
-                    'backskip',
-                    'spacer',
-                    playerContext => (
-                        <BackSkip
-                            onSeekComplete={playerContext.onSeekComplete}
-                            currentTime={playerContext.currentTime}
-                        />
-                    ),
-                    'spacer',
-                    'playpause',
-                    'spacer',
-                    () => <FwdSkip />,
-                    'spacer',
-                    'forwardskip',
-                    'volume',
-                    'progress',
-                ]} /> 
-        </div>
+      <div id="player-div">
+        <MediaPlayerControls
+          playlist={playlist}
+          defaultReplayStrategy={'none'}
+          controls={[
+            'spacer',
+            'backskip',
+            'spacer',
+            playerContext => (
+                <BackSkip
+                    onSeekComplete={playerContext.onSeekComplete}
+                    currentTime={playerContext.currentTime}
+                />
+            ),
+            'spacer',
+            'playpause',
+            'spacer',
+            () => <FwdSkip />,
+            'spacer',
+            'forwardskip',
+            'volume',
+            'progress',
+        ]} /> 
+      </div>
     )
 }
 
