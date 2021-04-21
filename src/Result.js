@@ -1,7 +1,8 @@
 import React, {useState} from "react"
 
-const Result = ({user, result, setMessage}) => {
+const Result = ({user, result, setMessage, subscriptions}) => {
     const [info, setInfo] = useState({description: "", homepage:""})
+    let subscribed = false
     
     //Fetch info not available from iTunes from podcast's RSS feed
     const showInfo = () => {
@@ -21,7 +22,7 @@ const Result = ({user, result, setMessage}) => {
     
     //Save podcast to DB for tracking
     const trackPodcast = () => {
-    
+        
         const podcast = {
             title: result.collectionName,
             rss_feed: result.feedUrl,
@@ -40,8 +41,19 @@ const Result = ({user, result, setMessage}) => {
             body: JSON.stringify({podcast, user})
         })
             .then(r => r.json())
-            .then(newPod => setMessage(`Subscribed to ${newPod.title}`))
+            .then(newPod => {
+                setMessage({msg: `Subscribed to ${newPod.title}`, severity:"success"})
+                subscribed = true
+            })
     }
+        
+    subscriptions.forEach(subscription => {
+        if( subscription.podcast.rss_feed === result.feedUrl ){
+            console.log(`subscribed to ${result.collectionName}`)
+            subscribed = true
+        }
+    })
+    console.log(subscribed)
 
     return (
         <li>
@@ -57,7 +69,7 @@ const Result = ({user, result, setMessage}) => {
                 </>
             }
             <br />
-            <button onClick={trackPodcast}>Track Podcast</button>
+            <p>{subscribed ? "Subscribed" : <button onClick={trackPodcast}>Track Podcast</button>}</p>
             <a href={result.feedUrl}>rss</a>
         </li>
     )

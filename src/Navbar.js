@@ -17,11 +17,11 @@ const Navbar = ({setUser}) => {
             <NavLink to="/search" className="navlink">
                 Search
             </NavLink>
-
-            {/* <NavLink to="/settings" className="navlink">
-                Settings
-            </NavLink> */}
-
+            <br/>
+            <NavLink to="/addpodcast" className="navlink">
+                Add Podcast RSS Feed
+            </NavLink>
+            <br />
             <NavLink to="/login" className={"navlink"} onClick={()=> logout()}>
               Log Out
             </NavLink>

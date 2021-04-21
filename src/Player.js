@@ -36,20 +36,9 @@ const Player = () => {
     const {playlist} = usePlayerContext(['playlist', 'onStateSnapshot'])
     console.log(playlist)
 
-    // useBeforeunload((event) =>{
-    //   if(playlist[0]){
-    //     fetch(`http://localhost:3000/users/${playlist[0].user_id}/playlist`, {
-    //       method: 'POST', 
-    //       headers: {
-    //         'Content-Type':'application/json',
-    //         Accept:'application/json'
-    //       }
-    //     })
-    //   }
-    // })
-
     return (
       <div id="player-div">
+        
         <MediaPlayerControls
           playlist={playlist}
           defaultReplayStrategy={'none'}

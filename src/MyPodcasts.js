@@ -2,9 +2,9 @@ import React, {useState, useEffect} from "react"
 import Podcast from "./Podcast"
 import { Grid } from '@material-ui/core'
 
-const MyPodcasts = ({user, setPlaylist, setMessage}) => {
-    const [subscriptions, setSubscriptions] = useState([])
-   
+const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscriptions}) => {
+    const [podComponents, setPodComponents] = useState(null)
+
     useEffect(()=> {
         fetch(`http://localhost:3000/user/${user.id}/subscriptions`)
             .then(r => r.json())
@@ -13,11 +13,14 @@ const MyPodcasts = ({user, setPlaylist, setMessage}) => {
             })
     }, [])
 
-    const unsubscribe = (sub_id) => {
+    const unsubscribe = (title, sub_id) => {
         fetch(`http://localhost:3000/subscriptions/${sub_id}`, {
             method:'DELETE'
         })
-            .then(()=> setSubscriptions(subscriptions.filter(subscription => subscription.id !== sub_id)))
+            .then(()=> {
+                setSubscriptions(subscriptions.filter(subscription => subscription.id !== sub_id))
+                setMessage({msg:`Unsubscribed from - ${title}`, severity:"error"})
+            })
     }
 
     const podcastComps = subscriptions.map(subscription => 
@@ -29,6 +32,7 @@ const MyPodcasts = ({user, setPlaylist, setMessage}) => {
             key={subscription.podcast.title} 
             setPlaylist={setPlaylist}
             setMessage={setMessage}
+            setPodComponents={setPodComponents}
          />)
     
     return (
@@ -40,6 +44,9 @@ const MyPodcasts = ({user, setPlaylist, setMessage}) => {
                 :
                 <h2>You haven't subscribed to any podcasts yet!</h2>
             }
+            <div id="podcast-detail">
+                {podComponents}
+            </div>
         </>
     )
 }

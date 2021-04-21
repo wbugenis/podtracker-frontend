@@ -1,10 +1,9 @@
 import React, {useState} from "react"
 import { Link } from "react-router-dom"
 
-const Login = ({setUser}) =>{
+const Login = ({setUser, setMessage}) =>{
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
-    const [errors, setErrors] = useState("")
 
     const handleLogin = (event) =>{
         event.preventDefault()
@@ -36,13 +35,16 @@ const Login = ({setUser}) =>{
                 if(response.toString().includes("TypeError")){
                     response = {errors: ["Server Error"]}
                 }
-                setErrors(response.errors)
+                if(response.errors){
+                    const errorMsgs = response.errors.join('\n')
+                    setMessage({msg: errorMsgs, severity:"error"})
+                }
             });
       }
            
     return (
         <>
-            <h3 >Login</h3>
+            <h3>Login</h3>
             <form onSubmit={handleLogin}>                
                     <input type="text" value={username} placeholder="Enter Your Name" onChange={e=>setUsername(e.target.value)}/>
                     <br/>
@@ -50,14 +52,6 @@ const Login = ({setUser}) =>{
                     <br />
                     <input type="submit" value="Login"/>
             </form>
-            <br />
-            {errors.length !== 0 ? (
-                <>
-                {errors.map((er, i) => (
-                    <div key={i}>{er}</div>
-                ))}
-                </>
-            ) : null}
             <Link to="/signup">Register</Link>
         </>
     )

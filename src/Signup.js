@@ -63,7 +63,7 @@ const Signup = ({setUser}) =>{
                 ))}
                 </>
             ) : null}
-            <Link style={{marginLeft:'50px'}} to="/login">Login</Link>
+            <Link to="/login">Login</Link>
         </>
     )
 }

@@ -9,16 +9,22 @@ import MyPodcasts from './MyPodcasts'
 import Login from './Login'
 import Signup from './Signup'
 import Player from './Player'
+import AddPodcast from './AddPodcast'
 
 const Main = ({setPlaylist}) => {
     const [user, setUser] = useState({id: null})
-    const [message, setMessageText] = useState("")
+    const [message, setMessageText] = useState({msg:"", severity:""})
     const [showSnack, setShowSnack] = useState(false)
+    const [subscriptions, setSubscriptions] = useState([])
     const history = useHistory()
     console.log(user)
     
-    const setMessage = (message) =>{
-      setMessageText(message)
+    const setMessage = (newMessage) =>{
+      console.log(message)
+      console.log(newMessage)
+      console.log(newMessage.msg)
+      console.log(newMessage.severity)
+      setMessageText(newMessage)
       setShowSnack(true)
     }
   
@@ -52,7 +58,7 @@ const Main = ({setPlaylist}) => {
     }, []);
   
     const snackClose = () => {
-      setMessageText("")
+      setMessageText({msg:"", severity:""})
       setShowSnack(false)
     }
 
@@ -63,30 +69,40 @@ const Main = ({setPlaylist}) => {
           autoHideDuration={3000}
           onClose={snackClose}
           TransitionComponent={Fade}
-          key={message}
+          key={message.msg}
           anchorOrigin={{ vertical:'top', horizontal:'center'}}>
-          <Alert severity={"success"}>
-            {message}
+          <Alert severity={message.severity}>
+            {message.msg}
           </Alert>
         </Snackbar>
 
         {user && user.id ? 
         <>
           <div className="logo">
-            <h3 style={{fontStyle:"italic"}}>podtracker</h3>
+            <h3 style={{marginLeft: '20px', fontStyle:"italic"}}>podtracker</h3>
           </div>
           <Navbar setUser={setUser}/> 
           <Player /> 
           <section> 
             <Switch>
               <Route exact path ="/mypodcasts">
-                <MyPodcasts user={user} setPlaylist={setPlaylist} setMessage={setMessage} />
+                <MyPodcasts 
+                  user={user} 
+                  setPlaylist={setPlaylist} 
+                  setMessage={setMessage} 
+                  subscriptions={subscriptions} 
+                  setSubscriptions={setSubscriptions}
+                />
               </Route>
               <Route exact path="/search">
-                <Search user={user} setMessage={setMessage} />
+                <Search user={user} setMessage={setMessage} subscriptions={subscriptions} />
               </Route>
-              <Route exact path="/settings">
-                {/* <Settings /> */}
+              <Route exact path="/addpodcast">
+                <AddPodcast 
+                  user={user} 
+                  subscriptions={subscriptions} 
+                  setSubscriptions={setSubscriptions} 
+                />
               </Route>
               <Route exact path="/*">
                 <Redirect to={{pathname: "/mypodcasts"}} />
@@ -99,10 +115,10 @@ const Main = ({setPlaylist}) => {
           <h1 style={{fontStyle:'italic', color:"forestgreen"}}>podtracker</h1>
           <Switch>
             <Route exact path="/login">
-              <Login setUser={setUser}/>
+              <Login setUser={setUser} setMessage={setMessage} />
             </Route>
             <Route exact path="/signup">
-              <Signup setUser={setUser}/>
+              <Signup setUser={setUser} setMessage={setMessage} />
             </Route>
             <Route exact path="/*">
                 <Redirect to={{pathname: "/login"}}/>
