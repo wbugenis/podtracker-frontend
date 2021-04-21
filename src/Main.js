@@ -73,7 +73,7 @@ const Main = ({setPlaylist}) => {
         {user && user.id ? 
         <>
           <div className="logo">
-            <h1 style={{fontStyle:"italic"}}>podtracker</h1>
+            <h3 style={{fontStyle:"italic"}}>podtracker</h3>
           </div>
           <Navbar setUser={setUser}/> 
           <Player /> 

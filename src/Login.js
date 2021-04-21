@@ -42,7 +42,7 @@ const Login = ({setUser}) =>{
            
     return (
         <>
-            <h3 style={{marginLeft:'50px'}}>Login</h3>
+            <h3 >Login</h3>
             <form onSubmit={handleLogin}>                
                     <input type="text" value={username} placeholder="Enter Your Name" onChange={e=>setUsername(e.target.value)}/>
                     <br/>
@@ -58,7 +58,7 @@ const Login = ({setUser}) =>{
                 ))}
                 </>
             ) : null}
-            <Link style={{marginLeft:'50px'}} to="/signup">Register</Link>
+            <Link to="/signup">Register</Link>
         </>
     )
 }

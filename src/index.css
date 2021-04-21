@@ -5,6 +5,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-style: 'Gill Sans';
+  color: white;
 }
 
 code {
@@ -21,7 +23,7 @@ code {
     "nav content";
   grid-template-columns: 200px auto;
   grid-template-rows: 100px auto;
-  background-image: linear-gradient(grey, black);
+  /* background-image: linear-gradient(grey, black); */
 }
 
 aside {
@@ -35,7 +37,12 @@ aside {
 }
 
 section {
+  background-color: rgba(0,0,0,0.5);
   grid-area: content;
+}
+
+.navLink {
+  color: white;
 }
 
 h4 {
@@ -55,7 +62,7 @@ h4 {
   align-items: center;
   text-align: center;
   line-height: 1.7;
-  background-color: black;
+  background-color: rgba(0,0,0,0.5);
   width: 300px;
   height: 300px;
   padding:10px;

@@ -22,7 +22,7 @@ const Navbar = ({setUser}) => {
                 Settings
             </NavLink> */}
 
-            <NavLink to="/login" onClick={()=> logout()}>
+            <NavLink to="/login" className={"navlink"} onClick={()=> logout()}>
               Log Out
             </NavLink>
 
