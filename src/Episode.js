@@ -1,14 +1,18 @@
 import React, {useEffect, useState} from "react"
 import PlayTrack from './PlayTrack'
 import QueueTrack from './QueueTrack'
-import { ListItem, ListItemIcon, ListItemText, Collapse } from '@material-ui/core'
-import { ExpandLess, ExpandMore } from '@material-ui/icons'
- 
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import Collapse from '@material-ui/core/Collapse'
+import ExpandLess from '@material-ui/icons/ExpandLess'
+import ExpandMore from '@material-ui/icons/ExpandMore'
+
 const Episode = ({user, episode, userEpisodes, podcastId, setPlaylist, artwork, artist, setMessage}) => {
     const [showDesc, setShowDesc] = useState(false)
     const [userEpisode, setUserEpisode] = useState({listened: false, current_time:0, id:null})
     const {title, description, runtime, url, pubDate} = episode
-    let trackInfo = {title, url, artwork, artist, podcastId, user_id:user.id, current_time:userEpisode.current_time}
+    let trackInfo = {title, url, artwork, podcastId, user_id:user.id, current_time:userEpisode.current_time}
 
     useEffect(() => {
         const myEp = userEpisodes.find(userEpisode => userEpisode.title === title)
@@ -36,7 +40,7 @@ const Episode = ({user, episode, userEpisodes, podcastId, setPlaylist, artwork, 
                 .then(r => r.json())
                 .then(userEp => setUserEpisode(userEp))
         } else {
-            console.log("userep", body)
+            console.log(body)
             fetch(`http://localhost:3000/user_episodes/${userEpisode.id}`, {
                 method: 'PATCH',
                 headers: {
@@ -49,11 +53,12 @@ const Episode = ({user, episode, userEpisodes, podcastId, setPlaylist, artwork, 
                 .then(userEpisode => setUserEpisode(userEpisode)) 
         }
     } 
-  
+   
     return (
+        <>
         <ListItem >
             <ListItemIcon>
-                <PlayTrack trackInfo={trackInfo} setPlaylist={setPlaylist} updateUserEpisode={updateUserEpisode} setMessage={setMessage} />
+                <PlayTrack trackInfo={trackInfo} setPlaylist={setPlaylist} updateUserEpisode={updateUserEpisode} setMessage={setMessage} userEpisode={userEpisode} />
                 <QueueTrack trackInfo={trackInfo} setPlaylist={setPlaylist} />
                 {userEpisode.listened ?
                     <span className="material-icons" onClick={()=>updateUserEpisode({listened:false})}>
@@ -65,25 +70,25 @@ const Episode = ({user, episode, userEpisodes, podcastId, setPlaylist, artwork, 
                     </span>
                 }
             </ListItemIcon>
-            <ListItemText
-                style={userEpisode.listened ? {textDecorationLine: 'line-through', textDecorationStyle: 'solid', } : null}
+            
+            <ListItemText 
+                style={userEpisode.listened ? {textDecorationColor: 'red', color:"white", textDecorationLine: 'line-through', textDecorationStyle: 'solid', alignItems:'flex-start'} : {alignItems:'flex-start'}}
                 primary={title} 
+                onClick={()=>setShowDesc(!showDesc)}
                 secondary={`Runtime: ${runtime} | Published: ${pubDate}`}
+
             />
-            <ListItemIcon onClick={()=>setShowDesc(!showDesc)}>
+            <ListItemIcon onClick={()=>setShowDesc(!showDesc)} style={{color:'white'}}>
                 {showDesc ? <ExpandLess /> : <ExpandMore />}
             </ListItemIcon>
-            <Collapse in={showDesc} timeout="auto" unmountOnExit>
-                <ListItemText primary={description} />
-            </Collapse>
-        </ListItem>
-        /* <li style={userEpisode.listened ? {fontStyle:'italic'} : null}>
-            <div>{title}</div>
-            <div onClick={()=>setShowDesc(!showDesc)}>+ {showDesc ? <>{description}</> : null } </div>
-            <div>{runtime} | {pubDate}</div>
             
-            <button onClick={updateUserEpisode}>Listened</button>
-        </li> */
+        </ListItem>
+        
+        <Collapse in={showDesc} timeout="auto" unmountOnExit onClick={()=>setShowDesc(!showDesc)}>
+            <ListItemText primary={description.replace(/(<([^>]+)>)/gi, "")} styles={{margin:'10px', textSize:'8px'}}/>
+        </Collapse>
+        <hr />
+        </>
     )
 }
 

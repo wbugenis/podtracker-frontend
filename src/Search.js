@@ -17,11 +17,12 @@ const Search = ({user, setMessage, subscriptions}) => {
     }
 
     return (
-        <div>
+        <div style={{justifyContent:'center'}}>
             <SearchBar handleSearch={handleSearch} />
             {searchTerm === "" ? null : 
             <>
                 <h2>Search results for "{searchTerm}"</h2>
+                <br />
                 <ResultsContainer 
                     user={user} 
                     results={results} 

@@ -4,11 +4,10 @@ import Parser from 'rss-parser'
 import Episode from "./Episode"
 import { Grid, List, ListSubheader } from "@material-ui/core"
 
-const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, showEps}) => {
+const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, setPodComponents, setShowPodcasts}) => {
     const {id, title, description, podcast_img_url, podcast_home_url} = podcast
     const [episodes, setEpisodes] = useState([])
     const [userEpisodes, setUserEpisodes] = useState([])
-    const [showEpisodes, setShowEpisodes] = useState(false)
 
     const prettyTime = (timeStr) => {
         if (timeStr){
@@ -68,16 +67,20 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
             setPlaylist={setPlaylist}
             podcastId={podcast.id} 
             setMessage={setMessage}
-            userEpisodes={userEpisodes} 
+            userEpisodes={userEpisodes}
+            setUserEpisodes={setUserEpisodes}
             artwork={[{src:podcast_img_url, sizes:'196x196', type:'image/jpg'}]}
             artist={podcast.title} 
         />)
         
     const podComponents = (
         <>
-            <div class='description'>
-                <h1>{title}</h1>
-                <p>{description}</p>
+            <div className='description'>
+                <img src={podcast_img_url} alt={title}/>
+                <div class='description-text'>
+                    <h2 style={{margin: '5px 0px 5px 0px'}}>{title}</h2>
+                    <p style={{margin: '2px 2px 2px 2px'}}>{description.replace(/(<([^>]+)>)/gi, "")}</p>
+                </div>
             </div>
                 <List 
                     component="nav"
@@ -85,11 +88,16 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
                     style={{
                         overflowY:'scroll',
                         backgroundColor: 'rgba(144,144,144,0.5)',
-                        borderRadius:'25px',
-                        height:'600px'
+                        borderRadius:'15px',
+                        height:'600px',
+                        width:'800px'
                     }}
                     subheader={
-                    <ListSubheader component="div" id="nested-list-subheader" className="episode-container"
+                    <ListSubheader 
+                        component="div" 
+                        id="nested-list-subheader" 
+                        className="episode-container"
+                        style={{backgroundColor: 'rgba(144,144,144,1)'}}
                     >
                         Episodes
                     </ListSubheader>}
@@ -98,14 +106,27 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
                 </List>
             </>
         )
+    
+    const showEpisodes = () => {
+        console.log(episodeComps)
+        console.log("showing", podComponents)
+        setShowPodcasts(false)
+        setPodComponents(podComponents)   
+    }
 
+    console.log(title, podcast_home_url)   
     return (
         <Grid item className="podcast-div"  style={{margin:'1px 4px 1px 4px', padding: '2px 2px 2px 2px'}}>
             <h4>{title}</h4>
-            <img src={podcast_img_url} alt={title} onClick={()=>showEps(podComponents)} />
+            <img src={podcast_img_url} alt={title} onClick={showEpisodes} />
             <br />
-            <button onClick={()=>unsubscribe(title, sub_id)}>Unsubscribe</button>
-            <a href={podcast_home_url} target="_blank" rel="noreferrer">Homepage</a>
+            <span class="material-icons" onClick={()=>unsubscribe(title, sub_id)}>
+                delete_outline
+            </span>
+            {/* <span class="material-icons-outlined">
+                home
+            </span> */}
+            <a href={podcast_home_url} target="_blank" rel="noreferrer" className="material-icons">home</a>
             <br/>
         </Grid>
     )

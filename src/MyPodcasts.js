@@ -1,16 +1,11 @@
 import React, {useState, useEffect} from "react"
 import Podcast from "./Podcast"
-import { Grid } from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
 
 const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscriptions}) => {
     const [podComponents, setPodComponents] = useState(null)
     const [showPodcasts, setShowPodcasts] = useState(true)
     
-    const showEps = (podComps) => {
-        setShowPodcasts(false)
-        setPodComponents(podComps)
-    }
-
     useEffect(()=> {
         fetch(`http://localhost:3000/user/${user.id}/subscriptions`)
             .then(r => r.json())
@@ -38,35 +33,36 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
             key={subscription.podcast.title} 
             setPlaylist={setPlaylist}
             setMessage={setMessage}
-            showEps={showEps}
+            setPodComponents={setPodComponents}
+            setShowPodcasts={setShowPodcasts}
          />
          )
 
-    console.log(podcastComps)
     console.log(showPodcasts)
-    console.log(subscriptions.length)
     return (
         <> 
             {subscriptions.length > 0 ? 
             <>
-                {console.log("yoo")}
-                {
-                    (()=>{
-                        console.log("sup")
-                        if(showPodcasts){
-                            console.log("hi")
-                            return (
-                                <Grid container spacing={4} className='podcast-grid' style={{flexBasis:'unset',
-                                flexWrap:'nowrap', width:'1000px', margin:'0px'}}>
-                                    {podcastComps} 
-                                </Grid>
-                            )
-                        } else {
-                            console.log(false)
-                            return <button onClick={()=>setShowPodcasts(true)}>Show Podcasts</button>
-                        }
-                    })()
-                }
+            <div onClick={()=>setShowPodcasts(!showPodcasts)}>
+            {showPodcasts ? 
+                <span className="material-icons">
+                expand_less
+                </span>
+            : 
+            <span className="material-icons">
+                expand_more
+            </span>} 
+            Podcasts
+            </div>
+             {(()=>{ 
+                 if(showPodcasts){
+                    return (
+                        <Grid container spacing={4} className='podcast-grid' style={{flexBasis:'unset',
+                        flexWrap:'nowrap', width:'1000px', margin:'0px', padding:'5px 10px 0px 10px'}}>
+                            {podcastComps} 
+                        </Grid>
+                    )
+                 }})()}
             </>
                 :
                 <h2>You haven't subscribed to any podcasts yet!</h2>

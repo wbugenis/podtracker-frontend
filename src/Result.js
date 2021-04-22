@@ -1,13 +1,21 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 
 const Result = ({user, result, setMessage, subscriptions}) => {
     const [info, setInfo] = useState({description: "", homepage:""})
-    let subscribed = false
-    
+    const [subscribed, setSubscribed] = useState(false)
+    useEffect(()=> showInfo(), [])
+
+    useEffect(()=>{
+        subscriptions.forEach(subscription => {
+            if( subscription.podcast.rss_feed === result.feedUrl ){
+                setSubscribed(true)
+            }
+        })
+    }, [])
+
     //Fetch info not available from iTunes from podcast's RSS feed
     const showInfo = () => {
         const rss = result.feedUrl
-        console.log("getting info")
         fetch("http://localhost:3000/search/info", {
             method: "POST",
             headers: {
@@ -25,10 +33,10 @@ const Result = ({user, result, setMessage, subscriptions}) => {
         
         const podcast = {
             title: result.collectionName,
-            rss_feed: result.feedUrl,
-            podcast_img_url: result.artworkUrl600,
+            rss_feed: result.feedUrl.replace('http://localhost:4000/', ''),
+            podcast_img_url: result.artworkUrl600.replace('http://localhost:4000/', ''),
             description: info.description,
-            podcast_home_url: info.homepage
+            podcast_home_url: info.homepage.replace('http://localhost:4000/', ''),
         }
         console.log(podcast)
 
@@ -43,35 +51,26 @@ const Result = ({user, result, setMessage, subscriptions}) => {
             .then(r => r.json())
             .then(newPod => {
                 setMessage({msg: `Subscribed to ${newPod.title}`, severity:"success"})
-                subscribed = true
+                setSubscribed(true)
             })
     }
-        
-    subscriptions.forEach(subscription => {
-        if( subscription.podcast.rss_feed === result.feedUrl ){
-            console.log(`subscribed to ${result.collectionName}`)
-            subscribed = true
-        }
-    })
-    console.log(subscribed)
 
     return (
-        <li>
-            <h1>{result.collectionName}</h1>
-            <img src = {result.artworkUrl100} alt = {result.collectionName} />
-            
-            {info.description==="" ? 
-                <button onClick={showInfo}>More Info?</button> 
-            :
-                <>
-                    <p>{info.description}</p>
-                    <a href={info.homepage} target="_blank" rel="noreferrer">Podcast Homepage</a>
-                </>
-            }
-            <br />
-            <p>{subscribed ? "Subscribed" : <button onClick={trackPodcast}>Track Podcast</button>}</p>
-            <a href={result.feedUrl}>rss</a>
-        </li>
+        <>
+            <div className='description'>
+                <img src={result.artworkUrl100} alt={result.collectionName}/>
+                <div class='description-text'>
+                    <h2 style={{margin: '5px 0px 5px 0px'}}>{result.collectionName}</h2>
+                    <p style={{margin: '2px 2px 2px 2px'}}>{info.description}</p>
+                    <br />
+                    <span style={{display:'inline-flex'}}>
+                        <div>{subscribed ? <button disabled>Subscribed</button> : <button onClick={trackPodcast}>Track Podcast</button>}</div>
+                        <a href={info.homepage} target="_blank" rel="noreferrer" style={{margin:'0px 15px 0px 15px'}}>Podcast Homepage</a>
+                        <a href={result.feedUrl}>RSS Feed</a>
+                    </span>
+                </div>
+            </div> 
+        </>
     )
 }
 

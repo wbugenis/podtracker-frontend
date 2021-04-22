@@ -9,13 +9,16 @@ const SearchBar = ({handleSearch}) => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Search Podcasts:
-                <input type="text" value={search} onChange={e=>setSearch(e.target.value)}/>
-            </label>
-            <input type="submit" value="Search"/>
-        </form>
+        <>  
+            <form onSubmit={handleSubmit} style={{textAlign:'center'}}>
+            <h1>iTunes Podcast Search</h1>
+                <label>
+                    Search Podcasts:
+                    <input type="text" value={search} onChange={e=>setSearch(e.target.value)}/>
+                </label>
+                <input type="submit" value="Search"/>
+            </form>
+        </>
     )
 }
 

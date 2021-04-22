@@ -9,7 +9,7 @@ const Signup = ({setUser}) =>{
 
     const handleSignup = (event) =>{
         event.preventDefault()
-    
+        console.log(username, password)
         fetch("http://localhost:3000/users", {
             method: "POST",
             headers: {

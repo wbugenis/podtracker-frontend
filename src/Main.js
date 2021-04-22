@@ -20,37 +20,28 @@ const Main = ({setPlaylist}) => {
     console.log(user)
     
     const setMessage = (newMessage) =>{
-      console.log(message)
-      console.log(newMessage)
-      console.log(newMessage.msg)
-      console.log(newMessage.severity)
       setMessageText(newMessage)
       setShowSnack(true)
     }
   
     useEffect(() => {
       if (!localStorage.getItem("token")) {
-        console.log("no token")
         history.push("/login");
       }
     }, [])
   
     useEffect(() => {
       const token = localStorage.getItem("token");
-      console.log("got token")
       if (token) {
-        console.log(token)
         fetch(`http://localhost:3000/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         })
           .then((r) => {
-            console.log(r)
             return r.json()
           })
           .then((user) => {
-            console.log(user)
             setUser(user)
           })
           .catch(error => console.log(error))
@@ -79,7 +70,7 @@ const Main = ({setPlaylist}) => {
         {user && user.id ? 
         <>
           <div className="logo">
-            <h3 style={{marginLeft: '20px', fontStyle:"italic"}}>podtracker</h3>
+            <h2 style={{marginLeft: '20px', fontStyle:"italic"}}>podtracker</h2>
           </div>
           <Navbar setUser={setUser}/> 
           <Player /> 

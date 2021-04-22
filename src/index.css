@@ -19,7 +19,7 @@ code {
 .main {
   position: sticky;
   top: 0;
-  width:100%;
+  width:1200px;
   height:100vh;
   display: grid;
   grid-template-areas: 
@@ -30,12 +30,23 @@ code {
   /* background-image: linear-gradient(grey, black); */
 }
 
+.navlink {
+  color:white;
+}
+.navlink active{
+  color: green;
+}
+
+.MuiTypography-colorTextSecondary{
+  color:white;
+}
+
 aside {
   grid-area: nav;
   display:inline-flex;
   position: sticky;
   top: 0;
-  padding: 2em;
+  padding-left: 8px;
   flex-direction: column;
   /* height: 500px; */
 }
@@ -110,13 +121,28 @@ h4 {
   color:white;
 }
 .material-icons:hover{
-  color:forestgreen
+  color:forestgreen;
+  cursor: pointer;
 }
 
 .description{
+  display: inline-flex;
   border: 1px solid;
-  border-radius: 25px;
-  width:1000px;
+  border-radius: 15px;
+  width:800px;
   margin: 10px 0px 10px 0px;
-  padding: 10px 10px 10px 10px;
+  padding: 8px 8px 8px 8px;
+  box-sizing: border-box;
+  background-color: 'rgba(144,144,144,0.5)';
+}
+
+.description-text{
+  flex-direction: column;
+  margin-left: 10px;
+  padding: 3px 3px 3px 3px;
+}
+
+.description img {
+  width:125px;
+  height:125px;
 }

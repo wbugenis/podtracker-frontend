@@ -23,19 +23,24 @@ const AddPodcast = ({user, setMessage}) => {
         })
             .then(r => r.json())
             .then(newPod => {
+                console.log(newPod)
                 setMessage({msg: `Subscribed to ${newPod.title}`, severity:"success"})
                 history.pushState("/mypodcasts")
             })
     }
 
     return (
-        <form className="add-podcast" onSubmit={trackPodcast}>
-            <input type="text" value={title} placeholder="Enter Podcast Title" onChange={e=>setTitle(e.target.value)}/>
-            <br />
-            <input type="text" value={rssFeed} placeholder="Add RSS Feed URL" onChange={e=>setRssFeed(e.target.value)}/>
-            <br />
-            <input type="submit" value="Add Podcast"/>
-        </form>
+        <div className="add-podcast" style={{textAlign:'center'}}>
+            <form  onSubmit={trackPodcast} >
+                <h1>RSS Subscription Form</h1>
+                <p>Can't find your podcast on iTunes, but have an RSS feed link? Enter it here!</p>
+                <input type="text" value={title} placeholder="Enter Podcast Title" onChange={e=>setTitle(e.target.value)}/>
+                <br />
+                <input type="text" value={rssFeed} placeholder="Add RSS Feed URL" onChange={e=>setRssFeed(e.target.value)}/>
+                <br />
+                <input type="submit" value="Add Podcast"/>
+            </form>
+        </div>
     )
 }
 

@@ -13,17 +13,23 @@ const Navbar = ({setUser}) => {
             <NavLink to="/mypodcasts" className="navlink">
                 My Podcasts
             </NavLink>
+          
             <br/>
+
             <NavLink to="/search" className="navlink">
                 Search
             </NavLink>
+        
             <br/>
+
             <NavLink to="/addpodcast" className="navlink">
                 Add Podcast RSS Feed
             </NavLink>
+            
             <br />
+
             <NavLink to="/login" className={"navlink"} onClick={()=> logout()}>
-              Log Out
+            Log Out
             </NavLink>
 
         </aside>

@@ -1,7 +1,6 @@
 import React from "react"
 import { MediaPlayerControls } from '@cassette/player'
 import { usePlayerContext} from '@cassette/hooks'
-import { useBeforeunload } from 'react-beforeunload'
 import '@cassette/player/dist/css/cassette-player.css'
 //https://github.com/benwiley4000/cassette#readme
 
