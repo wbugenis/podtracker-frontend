@@ -5,6 +5,7 @@ const Result = ({user, result, setMessage, subscriptions}) => {
     const [subscribed, setSubscribed] = useState(false)
     useEffect(()=> showInfo(), [])
 
+    //Check if user is already subscribed to any of podcasts in search results by RSS URL
     useEffect(()=>{
         subscriptions.forEach(subscription => {
             if( subscription.podcast.rss_feed === result.feedUrl ){

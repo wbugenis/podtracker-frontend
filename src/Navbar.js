@@ -29,7 +29,7 @@ const Navbar = ({setUser}) => {
             <br />
 
             <NavLink to="/login" className={"navlink"} onClick={()=> logout()}>
-            Log Out
+                Log Out
             </NavLink>
 
         </aside>

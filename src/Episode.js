@@ -14,6 +14,7 @@ const Episode = ({user, episode, userEpisodes, podcastId, setPlaylist, artwork, 
     const {title, description, runtime, url, pubDate} = episode
     let trackInfo = {title, url, artwork, podcastId, user_id:user.id, current_time:userEpisode.current_time}
 
+    // Find any episodes a user has interacted with based on episodes titles from RSS listing
     useEffect(() => {
         const myEp = userEpisodes.find(userEpisode => userEpisode.title === title)
         console.log(myEp)
@@ -24,6 +25,7 @@ const Episode = ({user, episode, userEpisodes, podcastId, setPlaylist, artwork, 
         trackInfo = {...trackInfo, current_time:userEpisode.current_time}
     }, [userEpisodes])
 
+    //Function to either post or update UserEpisodes, depending on if an entry already exists
     const updateUserEpisode = (body) => {
         console.log(body)
         if (userEpisode.id === null) {
@@ -58,8 +60,17 @@ const Episode = ({user, episode, userEpisodes, podcastId, setPlaylist, artwork, 
         <>
         <ListItem >
             <ListItemIcon>
-                <PlayTrack trackInfo={trackInfo} setPlaylist={setPlaylist} updateUserEpisode={updateUserEpisode} setMessage={setMessage} userEpisode={userEpisode} />
-                <QueueTrack trackInfo={trackInfo} setPlaylist={setPlaylist} />
+                <PlayTrack 
+                    trackInfo={trackInfo} 
+                    setPlaylist={setPlaylist} 
+                    updateUserEpisode={updateUserEpisode} 
+                    setMessage={setMessage} 
+                    userEpisode={userEpisode} 
+                />
+                <QueueTrack 
+                    trackInfo={trackInfo} 
+                    setPlaylist={setPlaylist} 
+                />
                 {userEpisode.listened ?
                     <span className="material-icons" onClick={()=>updateUserEpisode({listened:false})}>
                         remove_done

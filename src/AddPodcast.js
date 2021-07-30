@@ -13,6 +13,7 @@ const AddPodcast = ({user, setMessage}) => {
         }
         console.log(podcast)
 
+        //Post new podcast subscription to DB for the logged in user
         fetch(`http://localhost:3000/subscriptions`, {
             method: "POST", 
             headers: {
@@ -25,6 +26,7 @@ const AddPodcast = ({user, setMessage}) => {
             .then(newPod => {
                 console.log(newPod)
                 setMessage({msg: `Subscribed to ${newPod.title}`, severity:"success"})
+                // Jump to podcast display page after subscription
                 history.pushState("/mypodcasts")
             })
     }

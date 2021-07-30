@@ -9,6 +9,7 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
     const [episodes, setEpisodes] = useState([])
     const [userEpisodes, setUserEpisodes] = useState([])
 
+    //Show podcast times in readable format instead of only in seconds
     const prettyTime = (timeStr) => {
         if (timeStr){
             if (timeStr.includes(':')){
@@ -34,17 +35,19 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
     }
 
     useEffect(() => {
+        //Retrieve all entries of episodes the user has interacted with from backend
         fetch(`http://localhost:3000/userepisodes/${user.id}/${podcast.id}`)
             .then(r => r.json())
             .then(userEpisodes => setUserEpisodes(userEpisodes))
 
+        //Get latest XML string of podcast's RSS feed to be parsed
         fetch(`http://localhost:3000/podcasts/${id}/feed`)
             .then(r => r.json())
             .then(xmlString => {
                 const parser = new Parser()
                 return parser.parseString(xmlString.body)
             })
-            .then(dom=> {
+            .then(dom => {
                 const episodes = []
                 dom.items.forEach(item => {
                     episodes.push({
@@ -93,14 +96,15 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
                         width:'800px'
                     }}
                     subheader={
-                    <ListSubheader 
-                        component="div" 
-                        id="nested-list-subheader" 
-                        className="episode-container"
-                        style={{backgroundColor: 'rgba(144,144,144,1)'}}
-                    >
-                        Episodes
-                    </ListSubheader>}
+                        <ListSubheader 
+                            component="div" 
+                            id="nested-list-subheader" 
+                            className="episode-container"
+                            style={{backgroundColor: 'rgba(144,144,144,1)'}}
+                        >
+                            Episodes
+                        </ListSubheader>
+                    }
                 >
                     {episodeComps} 
                 </List>

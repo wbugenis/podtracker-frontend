@@ -13,7 +13,15 @@ const ResultsContainer = ({user, results, setMessage, subscriptions}) => {
     />)
         console.log(resultsArr)
     return (
-        <Grid container spacing={2} className='result-grid' style={{display:'inline-block', padding: '10px 10px 0px 10px', overflowY:'scroll', height:'800px'}} >
+        <Grid 
+            container spacing={2} 
+            className='result-grid' 
+            style={{
+                display:'inline-block', 
+                padding: '10px 10px 0px 10px', 
+                overflowY:'scroll', 
+                height:'800px'
+            }} >
             {resultsArr}
         </Grid>
     )

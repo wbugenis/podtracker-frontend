@@ -1,6 +1,7 @@
 import React from "react"
 import { usePlayerContext } from "@cassette/hooks"
 
+//Component for queue track button
 const QueueTrack = ({trackInfo, setPlaylist}) => {
     const { playlist } = usePlayerContext(['playlist'])
     
