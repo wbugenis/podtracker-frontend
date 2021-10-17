@@ -3,8 +3,10 @@ import Podcast from "./Podcast"
 import Grid from '@material-ui/core/Grid'
 
 const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscriptions}) => {
-    const [podComponents, setPodComponents] = useState(null)
-    const [showPodcasts, setShowPodcasts] = useState(true)
+    const [podComponents, setPodComponents] = useState(null);
+    const [showPodcasts, setShowPodcasts] = useState(true);
+    const [userEpId, setUserEpId] = useState(null);
+    console.log(userEpId);
    
     //Retrieve all of user's subscribed podcasts
     useEffect(()=> {
@@ -37,10 +39,11 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
             setMessage={setMessage}
             setPodComponents={setPodComponents}
             setShowPodcasts={setShowPodcasts}
+            userEpId={userEpId}
+            setUserEpId={setUserEpId}
          />
          )
 
-    console.log(showPodcasts)
     return (
         <> 
             {subscriptions.length > 0 ? 
@@ -48,7 +51,7 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
             <div onClick={()=>setShowPodcasts(!showPodcasts)}>
             {showPodcasts ? 
                 <span className="material-icons">
-                expand_less
+                expand_less 
                 </span>
             : 
             <span className="material-icons">

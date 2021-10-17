@@ -39,7 +39,6 @@ const Result = ({user, result, setMessage, subscriptions}) => {
             description: info.description,
             podcast_home_url: info.homepage.replace('http://localhost:4000/', ''),
         }
-        console.log(podcast)
 
         fetch(`http://localhost:3000/subscriptions`, {
             method: "POST", 
@@ -60,7 +59,7 @@ const Result = ({user, result, setMessage, subscriptions}) => {
         <>
             <div className='description'>
                 <img src={result.artworkUrl100} alt={result.collectionName}/>
-                <div class='description-text'>
+                <div className='description-text'>
                     <h2 style={{margin: '5px 0px 5px 0px'}}>{result.collectionName}</h2>
                     <p style={{margin: '2px 2px 2px 2px'}}>{info.description}</p>
                     <br />

@@ -8,7 +8,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-style: 'Gill Sans';
   color: white;
-  /* background-color: darkblue; */
+  background-color: darkblue;
 }
 
 code {
@@ -16,7 +16,7 @@ code {
     monospace;
 }
 
-.main {
+.app {
   position: sticky;
   top: 0;
   width:1200px;

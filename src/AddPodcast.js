@@ -1,17 +1,16 @@
-import React, { useState } from 'react'
-import {useHistory} from 'react-router-dom'
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const AddPodcast = ({user, setMessage}) => {
-    const [title, setTitle] = useState("")
-    const [rssFeed, setRssFeed] = useState("")
-    const history = useHistory()
+    const [title, setTitle] = useState("");
+    const [rssFeed, setRssFeed] = useState("");
+    const history = useHistory();
     const trackPodcast = () => {
         
         const podcast = {
             title: title,
             rss_feed: rssFeed
         }
-        console.log(podcast)
 
         //Post new podcast subscription to DB for the logged in user
         fetch(`http://localhost:3000/subscriptions`, {
@@ -24,7 +23,6 @@ const AddPodcast = ({user, setMessage}) => {
         })
             .then(r => r.json())
             .then(newPod => {
-                console.log(newPod)
                 setMessage({msg: `Subscribed to ${newPod.title}`, severity:"success"})
                 // Jump to podcast display page after subscription
                 history.pushState("/mypodcasts")

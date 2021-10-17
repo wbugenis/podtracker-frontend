@@ -4,6 +4,7 @@ import { usePlayerContext} from '@cassette/hooks'
 import '@cassette/player/dist/css/cassette-player.css'
 //https://github.com/benwiley4000/cassette#readme
 
+//Custom Cassette button to allow skipping 10 seconds backward
 const BackSkip = ({onSeekComplete, currentTime }) => {
   return (
     <span
@@ -17,6 +18,7 @@ const BackSkip = ({onSeekComplete, currentTime }) => {
   );
 }
 
+//Custom Cassette button to allow skipping 30 seconds forward
 const FwdSkip = () => {
   const {currentTime, onSeekComplete} = usePlayerContext(['currentTime', 'onSeekComplete'])
     return (  
@@ -33,11 +35,10 @@ const FwdSkip = () => {
 
 const Player = () => {
     const {playlist} = usePlayerContext(['playlist', 'onStateSnapshot'])
-    console.log(playlist)
 
     return (
       <div id="player-div">
-        
+        <div onClick={() => console.log(playlist)}>show playlist</div> 
         <MediaPlayerControls
           playlist={playlist}
           defaultVolume={0.2}
@@ -60,7 +61,8 @@ const Player = () => {
             'forwardskip',
             'volume',
             'progress',
-        ]} /> 
+        ]} />
+        
       </div>
     )
 }

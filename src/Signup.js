@@ -9,7 +9,6 @@ const Signup = ({setUser}) =>{
 
     const handleSignup = (event) =>{
         event.preventDefault()
-        console.log(username, password)
         fetch("http://localhost:3000/users", {
             method: "POST",
             headers: {
@@ -28,7 +27,6 @@ const Signup = ({setUser}) =>{
                 });
             })
             .then((response) => {
-                console.log(response)
                 const { user, token } = response;
                 localStorage.setItem("token", token);
                 setUser(user);

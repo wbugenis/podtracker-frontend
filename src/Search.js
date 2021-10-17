@@ -11,7 +11,6 @@ const Search = ({user, setMessage, subscriptions}) => {
         fetch(`http://localhost:3000/search/${search}`)
             .then(r => r.json())
             .then(resultsObj => {
-                console.log(resultsObj)
                 setResults(resultsObj)
             })
     }
