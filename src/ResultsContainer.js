@@ -1,17 +1,18 @@
-import React from "react"
-import Result from "./Result"
-import { Grid } from "@material-ui/core"
+import React from "react";
+import Result from "./Result";
+import { Grid } from "@material-ui/core";
 
 const ResultsContainer = ({user, results, setMessage, subscriptions}) => {
     const resultsArr = results.map(result=> 
-    <Result 
-        user={user} 
-        result={result} 
-        key={result.collectionId} 
-        setMessage={setMessage} 
-        subscriptions={subscriptions}
-    />)
-        console.log(resultsArr)
+        <Result 
+            user={user} 
+            result={result} 
+            key={result.collectionId} 
+            setMessage={setMessage} 
+            subscriptions={subscriptions}
+        />
+    );
+
     return (
         <Grid 
             container spacing={2} 
@@ -24,7 +25,7 @@ const ResultsContainer = ({user, results, setMessage, subscriptions}) => {
             }} >
             {resultsArr}
         </Grid>
-    )
-}
+    );
+};
 
 export default ResultsContainer;

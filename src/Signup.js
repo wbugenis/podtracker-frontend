@@ -1,14 +1,14 @@
-import React, {useState} from "react"
-import { Link } from "react-router-dom"
+import React, {useState} from "react";
+import { Link } from "react-router-dom";
 
 const Signup = ({setUser}) =>{
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-    const [errors, setErrors] = useState([]) 
-    console.log("errors is", errors)
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [errors, setErrors] = useState([]) ;
+    console.log("errors is", errors);
 
     const handleSignup = (event) =>{
-        event.preventDefault()
+        event.preventDefault();
         fetch("http://localhost:3000/users", {
             method: "POST",
             headers: {
@@ -32,14 +32,14 @@ const Signup = ({setUser}) =>{
                 setUser(user);
             })
             .catch((response) =>{
-                console.log(response)
+                console.log(response);
                 if(response.toString().includes("TypeError")){
                     response = {errors: ["Server Error"]}
                 }
-                console.log(response)
-                setErrors(response.errors)
-             } );
-    }
+                console.log(response);
+                setErrors(response.errors);
+            });
+    };
         
     return (
         <>
@@ -63,7 +63,7 @@ const Signup = ({setUser}) =>{
             ) : null}
             <Link to="/login">Login</Link>
         </>
-    )
-}
+    );
+};
 
 export default Signup;

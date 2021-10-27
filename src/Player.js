@@ -34,11 +34,10 @@ const FwdSkip = () => {
   }
 
 const Player = () => {
-    const {playlist} = usePlayerContext(['playlist', 'onStateSnapshot'])
+    const {playlist} = usePlayerContext(['playlist', 'onStateSnapshot']);
 
     return (
       <div id="player-div">
-        <div onClick={() => console.log(playlist)}>show playlist</div> 
         <MediaPlayerControls
           playlist={playlist}
           defaultVolume={0.2}
@@ -61,8 +60,8 @@ const Player = () => {
             'forwardskip',
             'volume',
             'progress',
-        ]} />
-        
+          ]} 
+        />  
       </div>
     )
 }

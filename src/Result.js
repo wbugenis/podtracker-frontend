@@ -1,22 +1,22 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useState} from "react";
 
 const Result = ({user, result, setMessage, subscriptions}) => {
-    const [info, setInfo] = useState({description: "", homepage:""})
-    const [subscribed, setSubscribed] = useState(false)
-    useEffect(()=> showInfo(), [])
+    const [info, setInfo] = useState({description: "", homepage:""});
+    const [subscribed, setSubscribed] = useState(false);
+    useEffect(()=> showInfo(), []);
 
     //Check if user is already subscribed to any of podcasts in search results by RSS URL
     useEffect(()=>{
         subscriptions.forEach(subscription => {
             if( subscription.podcast.rss_feed === result.feedUrl ){
-                setSubscribed(true)
-            }
-        })
-    }, [])
+                setSubscribed(true);
+            };
+        });
+    }, []);
 
     //Fetch info not available from iTunes from podcast's RSS feed
     const showInfo = () => {
-        const rss = result.feedUrl
+        const rss = result.feedUrl;
         fetch("http://localhost:3000/search/info", {
             method: "POST",
             headers: {
@@ -38,7 +38,7 @@ const Result = ({user, result, setMessage, subscriptions}) => {
             podcast_img_url: result.artworkUrl600.replace('http://localhost:4000/', ''),
             description: info.description,
             podcast_home_url: info.homepage.replace('http://localhost:4000/', ''),
-        }
+        };
 
         fetch(`http://localhost:3000/subscriptions`, {
             method: "POST", 
@@ -53,7 +53,7 @@ const Result = ({user, result, setMessage, subscriptions}) => {
                 setMessage({msg: `Subscribed to ${newPod.title}`, severity:"success"})
                 setSubscribed(true)
             })
-    }
+    };
 
     return (
         <>

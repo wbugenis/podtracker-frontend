@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
 import { usePlayerContext } from '@cassette/hooks';
 
@@ -11,10 +11,12 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import prettyTime from './prettyTime';
 
-const Episode = ({user, episode, userEpisodes, setUserEpisodes, podcastId, setPlaylist, userEpId, setUserEpId, setMessage}) => {
-    const {title, description, runtime, url, pubDate} = episode;
+import {useSelector, useDispatch} from 'react-redux';
+import { changeId, addUserEpisodes, updateUserEpisodes } from './redux/epSlice';
+
+const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
+    const {title, description, runtime, pubDate} = episode;
     const {currentTime, playlist, onTogglePause, onSeekComplete} = usePlayerContext(['currentTime', 'playlist', 'onTogglePause', 'onSeekComplete']);
-    if(userEpId){console.log(userEpId);}
 
     const [showDesc, setShowDesc] = useState(false);
     const [userEpisode, setUserEpisode] = useState({
@@ -23,23 +25,34 @@ const Episode = ({user, episode, userEpisodes, setUserEpisodes, podcastId, setPl
     });
     const [resumeTime, setResumeTime] = useState("");
 
-    // Find any episodes a user has interacted with based on episodes titles from RSS listing
+    const userEpId = useSelector(state => state.episodes.epId); 
+    const userEpisodes = useSelector(state => state.episodes.userEpisodes);
+    const dispatch = useDispatch();
+
     useEffect(() => {
+        findUserEpisode();
+    }, [userEpisodes])
+
+    // Find any episodes a user has interacted with based on episodes titles from RSS listing
+    const findUserEpisode = () => {
         const myEp = userEpisodes.find(userEpisode => userEpisode.title === title);
 
         if (myEp){
-            console.log(myEp.id);
-            setUserEpisode({current_time: myEp.current_time, listened: myEp.listened, id: myEp.id});
-            const time = prettyTime(userEpisode.current_time);
-            if(time !== 'Not provided' || time !== "00:00:00"){
-                setResumeTime(`Resume from ${time}`);
-            };
+            setUserEpisode(userEpisode => userEpisode = myEp);
+            manageTime(myEp.current_time);
         }
+    }
 
-    }, [ userEpisodes ])
-    
+    //Creates a human-friendly timestamp readout
+    const manageTime = (time) => {
+        const niceTime = prettyTime(time);
+        if(niceTime !== "Not provided" && niceTime !== "00:00:00"){
+            setResumeTime(`Resume from ${niceTime}`);
+        };
+    }
+
     //Create new entry for episode in DB
-    const createUserEpisode = () => {
+    const createUserEpisode = (listened) => {
         fetch('http://localhost:3000/user_episodes', {
             method: 'POST',
             headers: {
@@ -49,29 +62,29 @@ const Episode = ({user, episode, userEpisodes, setUserEpisodes, podcastId, setPl
             body:JSON.stringify({
                 user_id: user.id,
                 podcast_id: podcastId,
-                listened: userEpisode.listened,
+                listened: listened,
                 current_time: userEpisode.current_time,
                 title: title
             })
         })
             .then(r => r.json())
             .then(savedEp => {
-                setUserEpisode(savedEp);
-                setUserEpId(savedEp.id);
-                setUserEpisodes(...userEpisodes, savedEp);
-                console.log("Created", savedEp, savedEp.id, userEpId);
-            });
+                dispatch(changeId({id: savedEp.id}));
+                dispatch(addUserEpisodes(savedEp));
+                play();
+            })                
     }
 
     //userEpisode will only ever need to update time or listened status
     const updateUserEpisode = (id, time, listened) => {
+        console.log(id, time, listened);
         let body = {id: id};
-        console.log(body);
-        if(time){
-            body = {...body, time: time };
+
+        if(time || time === 0){
+            body = {...body, current_time: time };
         };
 
-        if(listened){
+        if(listened !== null){
             body = {...body, listened: listened };
         };
 
@@ -87,27 +100,34 @@ const Episode = ({user, episode, userEpisodes, setUserEpisodes, podcastId, setPl
         })
             .then(r => r.json())
             .then(updatedEpisode => {
-                setUserEpisodes(...userEpisodes.filter(ep => ep.id !== updatedEpisode.id), updatedEpisode);
+                dispatch(updateUserEpisodes(updatedEpisode));
                 console.log("updated", updatedEpisode);
             });
     } 
 
-    const play = () =>{
-        console.log('play');
+    //Checks if userEpisode is present for this episode, creates one if not 
+    //Runs when play button or "listened" buttons are clicked
+    const saveUserEpisode = () =>{
         //Save episode to DB if no entry for episode is present
+        console.log("ep found", userEpisode);
         if(userEpisode.id === undefined){
-            createUserEpisode();
+            createUserEpisode(false);
         } else {
-            console.log(userEpisode.id)
-            setUserEpId(userEpisode.id);
+            play();
+            dispatch(changeId({id: userEpisode.id}));
         }
+
+        console.log(userEpisode, userEpisode.id);
     
         //If track is already playing, save current time to DB
         if (playlist[0]){
             console.log('playlist present');
             updateUserEpisode(userEpId, currentTime, null);
-        };
+        };  
+    }
 
+    //Starts episode playback in Casettte player
+    const play = () => {
         //Replace first track of playlist with clicked episode
         setPlaylist([episode].concat(playlist.slice(1)));
 
@@ -117,13 +137,14 @@ const Episode = ({user, episode, userEpisodes, setUserEpisodes, podcastId, setPl
             setTimeout(() => onSeekComplete(userEpisode.current_time), 100) 
         }, 500)  
     }
-   
+    
     return (
         <>
+        <div onClick={()=> console.log(userEpisode)}>click me</div>
             <ListItem >
                 <ListItemIcon>
 
-                    <span className="material-icons" onClick={() => play()}>
+                    <span className="material-icons" onClick={() => saveUserEpisode()}>
                         play_arrow
                     </span>
 
@@ -136,9 +157,14 @@ const Episode = ({user, episode, userEpisodes, setUserEpisodes, podcastId, setPl
                             remove_done
                         </span>
                         :
-                        <span className="material-icons"onClick={()=>updateUserEpisode(userEpisode.id, null, true)}>
-                            done
-                        </span>
+                        userEpisode.id ? 
+                            <span className="material-icons" onClick={()=>updateUserEpisode(userEpisode.id, null, true)}>
+                                done
+                            </span>
+                            :
+                            <span className="material-icons" onClick={()=>createUserEpisode(true)}>
+                                done
+                            </span>   
                     }
                 </ListItemIcon>
                 
@@ -148,8 +174,14 @@ const Episode = ({user, episode, userEpisodes, setUserEpisodes, podcastId, setPl
                     onClick={()=>setShowDesc(!showDesc)}
                     secondary={`Runtime: ${runtime} | Published: ${pubDate}`}    
                 />
+
+                <ListItemIcon>
+                    <ListItemText secondary={`ID: ${userEpisode.id} / ${resumeTime}`} />
                 
-                <ListItemText secondary={`id: ${userEpisode.id} + ${resumeTime}`} />
+                    <span className="material-icons" onClick={()=>updateUserEpisode(userEpisode.id, 0, null)}>
+                    delete_outline
+                </span>
+                </ListItemIcon>
 
                 <ListItemIcon onClick={()=>setShowDesc(!showDesc)} style={{color:'white'}}>
                     {showDesc ? <ExpandLess /> : <ExpandMore />}

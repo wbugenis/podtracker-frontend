@@ -45,19 +45,19 @@ const App = () => {
         },
       })
         .then((r) => {
-          return r.json()
+          return r.json();
         })
         .then((user) => {
-          setUser(user)
+          setUser(user);
         })
-        .catch(error => console.log(error))
+        .catch(error => console.log(error));
     }
   }, []);
 
   //Clear out message and set snackbar to hidden
   const snackClose = () => {
-    setMessageText({msg:"", severity:""})
-    setShowSnack(false)
+    setMessageText({msg:"", severity:""});
+    setShowSnack(false);
   }
 
   return (
@@ -85,6 +85,7 @@ const App = () => {
             <Player /> 
             <section> 
               <Switch>
+
                 <Route exact path ="/mypodcasts">
                   <MyPodcasts 
                     user={user} 
@@ -94,9 +95,11 @@ const App = () => {
                     setSubscriptions={setSubscriptions}
                   />
                 </Route>
+
                 <Route exact path="/search">
                   <Search user={user} setMessage={setMessage} subscriptions={subscriptions} />
                 </Route>
+
                 <Route exact path="/addpodcast">
                   <AddPodcast 
                     user={user} 
@@ -104,22 +107,28 @@ const App = () => {
                     setSubscriptions={setSubscriptions} 
                   />
                 </Route>
+
                 <Route exact path="/*">
                   <Redirect to={{pathname: "/mypodcasts"}} />
                 </Route>
+
               </Switch>
             </section>
           </>
         :
           <div className="welcome-div">
             <h1 style={{fontStyle:'italic'}}>podtracker</h1>
+
             <Switch>
+
               <Route exact path="/login">
                 <Login setUser={setUser} setMessage={setMessage} />
               </Route>
+
               <Route exact path="/signup">
                 <Signup setUser={setUser} setMessage={setMessage} />
               </Route>
+              
               <Route exact path="/*">
                   <Redirect to={{pathname: "/login"}}/>
               </Route>

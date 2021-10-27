@@ -1,11 +1,11 @@
-import React, {useState} from "react"
+import React, {useState} from "react";
 
 const SearchBar = ({handleSearch}) => {
-    const [search, setSearch] = useState("")
+    const [search, setSearch] = useState("");
 
     const handleSubmit = (event) => {
-        event.preventDefault()
-        handleSearch(search)
+        event.preventDefault();
+        handleSearch(search);
     }
 
     return (
@@ -19,7 +19,7 @@ const SearchBar = ({handleSearch}) => {
                 <input type="submit" value="Search"/>
             </form>
         </>
-    )
-}
+    );
+};
 
 export default SearchBar;

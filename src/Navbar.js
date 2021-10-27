@@ -1,15 +1,16 @@
-import React from "react"
-import { NavLink } from "react-router-dom"
+import React from "react";
+import { NavLink } from "react-router-dom";
 
 const Navbar = ({setUser}) => {
 
     const logout = () => {
         localStorage.removeItem("token");
-        setUser({id: null})
+        setUser({id: null});
     }
 
     return (
         <aside>
+            
             <NavLink to="/mypodcasts" className="navlink">
                 My Podcasts
             </NavLink>

@@ -1,12 +1,12 @@
-import React, {useState} from "react"
-import { Link } from "react-router-dom"
+import React, {useState} from "react";
+import { Link } from "react-router-dom";
 
 const Login = ({setUser, setMessage}) =>{
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
 
     const handleLogin = (event) =>{
-        event.preventDefault()
+        event.preventDefault();
 
         fetch("http://localhost:3000/login", {
             method: "POST",
@@ -31,14 +31,14 @@ const Login = ({setUser, setMessage}) =>{
                 setUser(user);
             })
             .catch((response) => {
-                console.log(response)
+                console.log(response);
                 if(response.toString().includes("TypeError")){
-                    response = {errors: ["Server Error"]}
-                }
+                    response = {errors: ["Server Error"]};
+                };
                 if(response.errors){
-                    const errorMsgs = response.errors.join('\n')
-                    setMessage({msg: errorMsgs, severity:"error"})
-                }
+                    const errorMsgs = response.errors.join('\n');
+                    setMessage({msg: errorMsgs, severity:"error"});
+                };
             });
       }
            

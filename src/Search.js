@@ -1,19 +1,18 @@
-import React, {useState} from "react"
-import SearchBar from "./SearchBar"
-import ResultsContainer from "./ResultsContainer"
+import React, {useState} from "react";
+import SearchBar from "./SearchBar";
+import ResultsContainer from "./ResultsContainer";
 
 const Search = ({user, setMessage, subscriptions}) => {
-    const [searchTerm, setSearchTerm] = useState("")
-    const [results, setResults] = useState([])
+    const [searchTerm, setSearchTerm] = useState("");
+    const [results, setResults] = useState([]);
 
     const handleSearch = (search) => {
-        setSearchTerm(search) 
+        setSearchTerm(search) ;
         fetch(`http://localhost:3000/search/${search}`)
             .then(r => r.json())
-            .then(resultsObj => {
-                setResults(resultsObj)
-            })
-    }
+            .then(resultsObj => { setResults(resultsObj) }
+        );
+    };
 
     return (
         <div style={{justifyContent:'center'}}>
@@ -32,8 +31,8 @@ const Search = ({user, setMessage, subscriptions}) => {
             </>
             }
         </div>
-    )
+    );
     
-}
+};
 
 export default Search;
