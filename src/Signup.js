@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { Link } from "react-router-dom";
 
 const Signup = ({setUser}) =>{
+    const url = process.env.REACT_APP_RAILS_URL;
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState([]) ;
@@ -9,7 +10,7 @@ const Signup = ({setUser}) =>{
 
     const handleSignup = (event) =>{
         event.preventDefault();
-        fetch("http://localhost:3000/users", {
+        fetch(`${url}users`, {
             method: "POST",
             headers: {
               'Content-Type':'application/json',

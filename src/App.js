@@ -14,6 +14,7 @@ import AddPodcast from './AddPodcast';
 import { PlayerContextProvider } from '@cassette/core';
 
 const App = () => {
+  const url = process.env.REACT_APP_RAILS_URL;
   const [user, setUser] = useState({id: null});
   const [message, setMessageText] = useState({msg:"", severity:""});
   const [showSnack, setShowSnack] = useState(false);
@@ -39,7 +40,7 @@ const App = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      fetch(`http://localhost:3000/me`, {
+      fetch(`${url}/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

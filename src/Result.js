@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 
 const Result = ({user, result, setMessage, subscriptions}) => {
+    const url = process.env.REACT_APP_RAILS_URL;
+    const reactURL = process.env.REACT_APP_FRONT_URL;
     const [info, setInfo] = useState({description: "", homepage:""});
     const [subscribed, setSubscribed] = useState(false);
     useEffect(()=> showInfo(), []);
@@ -17,7 +19,7 @@ const Result = ({user, result, setMessage, subscriptions}) => {
     //Fetch info not available from iTunes from podcast's RSS feed
     const showInfo = () => {
         const rss = result.feedUrl;
-        fetch("http://localhost:3000/search/info", {
+        fetch(`${url}search/info`, {
             method: "POST",
             headers: {
                 'Content-Type':'application/json',
@@ -34,13 +36,13 @@ const Result = ({user, result, setMessage, subscriptions}) => {
         
         const podcast = {
             title: result.collectionName,
-            rss_feed: result.feedUrl.replace('http://localhost:4000/', ''),
-            podcast_img_url: result.artworkUrl600.replace('http://localhost:4000/', ''),
+            rss_feed: result.feedUrl.replace(reactURL, ''),
+            podcast_img_url: result.artworkUrl600.replace(reactURL, ''),
             description: info.description,
-            podcast_home_url: info.homepage.replace('http://localhost:4000/', ''),
+            podcast_home_url: info.homepage.replace(reactURL, ''),
         };
 
-        fetch(`http://localhost:3000/subscriptions`, {
+        fetch(`${url}subscriptions`, {
             method: "POST", 
             headers: {
                 'Content-Type':"application/json",

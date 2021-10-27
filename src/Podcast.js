@@ -10,6 +10,7 @@ import { useSelector, useDispatch} from 'react-redux';
 import { setUserEpisodes } from './redux/epSlice';
 
 const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, setPodComponents, togglePodcastDisplay}) => {
+    const url = process.env.REACT_APP_RAILS_URL;
     const {id, title, description, podcast_img_url, podcast_home_url} = podcast;
     const [episodes, setEpisodes] = useState([]);
 
@@ -18,9 +19,8 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
 
     useEffect(() => {
         //Retrieve all entries of episodes the user has interacted with from backend
-        console.log(user.id,podcast.id);
         if(userEpisodes.length < 1){
-            fetch(`http://localhost:3000/userepisodes/${user.id}/${podcast.id}`)
+            fetch(`${url}userepisodes/${user.id}/${podcast.id}`)
                 .then(r => r.json())
                 .then(userEps => {
                     dispatch(setUserEpisodes(userEps))
@@ -28,7 +28,7 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
         }
 
         //Get latest XML string of podcast's RSS feed to be parsed
-        fetch(`http://localhost:3000/podcasts/${id}/feed`)
+        fetch(`${url}podcasts/${id}/feed`)
             .then(r => r.json())
             .then(xmlString => {
                 const parser = new Parser();

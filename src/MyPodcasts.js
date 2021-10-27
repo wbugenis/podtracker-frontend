@@ -3,12 +3,13 @@ import Podcast from "./Podcast";
 import Grid from '@material-ui/core/Grid';
 
 const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscriptions}) => {
+    const url = process.env.REACT_APP_RAILS_URL;
     const [podComponents, setPodComponents] = useState(null);
     const [podcastDisplay, setPodcastDisplay] = useState("flex");
    
     //Retrieve all of user's subscribed podcasts
     useEffect(()=> {
-        fetch(`http://localhost:3000/user/${user.id}/subscriptions`)
+        fetch(`${url}user/${user.id}/subscriptions`)
             .then(r => r.json())
             .then(subscriptions => {
                 setSubscriptions(subscriptions);
@@ -26,7 +27,7 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
 
     //Unsubscribe from podcast
     const unsubscribe = (title, sub_id) => {
-        fetch(`http://localhost:3000/subscriptions/${sub_id}`, {
+        fetch(`${url}subscriptions/${sub_id}`, {
             method:'DELETE'
         })
             .then(()=> {

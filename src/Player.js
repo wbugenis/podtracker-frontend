@@ -43,20 +43,16 @@ const Player = () => {
           defaultVolume={0.2}
           defaultReplayStrategy={'none'}
           controls={[
-            'spacer',
+            
             'backskip',
-            'spacer',
             playerContext => (
                 <BackSkip
                     onSeekComplete={playerContext.onSeekComplete}
                     currentTime={playerContext.currentTime}
                 />
             ),
-            'spacer',
             'playpause',
-            'spacer',
             () => <FwdSkip />,
-            'spacer',
             'forwardskip',
             'volume',
             'progress',

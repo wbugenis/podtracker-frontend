@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 const AddPodcast = ({user, setMessage}) => {
+    const url = process.env.REACT_APP_RAILS_URL;
     const [title, setTitle] = useState("");
     const [rssFeed, setRssFeed] = useState("");
     const history = useHistory();
@@ -14,7 +15,7 @@ const AddPodcast = ({user, setMessage}) => {
         };
 
         //Post new podcast subscription to DB for the logged in user
-        fetch(`http://localhost:3000/subscriptions`, {
+        fetch(`${url}subscriptions`, {
             method: "POST", 
             headers: {
                 'Content-Type':"application/json",

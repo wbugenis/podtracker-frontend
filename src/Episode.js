@@ -15,6 +15,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import { changeId, addUserEpisodes, updateUserEpisodes } from './redux/epSlice';
 
 const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
+    const url = process.env.REACT_APP_RAILS_URL;
     const {title, description, runtime, pubDate} = episode;
     const {currentTime, playlist, onTogglePause, onSeekComplete} = usePlayerContext(['currentTime', 'playlist', 'onTogglePause', 'onSeekComplete']);
 
@@ -29,19 +30,16 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
     const userEpisodes = useSelector(state => state.episodes.userEpisodes);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        findUserEpisode();
-    }, [userEpisodes])
-
     // Find any episodes a user has interacted with based on episodes titles from RSS listing
-    const findUserEpisode = () => {
+    // Retrieves latest info after userEpisodes is touched
+    useEffect(() => {
         const myEp = userEpisodes.find(userEpisode => userEpisode.title === title);
 
         if (myEp){
-            setUserEpisode(userEpisode => userEpisode = myEp);
+            setUserEpisode(myEp);
             manageTime(myEp.current_time);
         }
-    }
+    }, [userEpisodes])
 
     //Creates a human-friendly timestamp readout
     const manageTime = (time) => {
@@ -49,11 +47,14 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
         if(niceTime !== "Not provided" && niceTime !== "00:00:00"){
             setResumeTime(`Resume from ${niceTime}`);
         };
+        if(time === 0){
+            setResumeTime("");
+        }
     }
 
     //Create new entry for episode in DB
     const createUserEpisode = (listened) => {
-        fetch('http://localhost:3000/user_episodes', {
+        fetch(`${url}user_episodes`, {
             method: 'POST',
             headers: {
                 'Content-Type':'application/json',
@@ -87,7 +88,7 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
             body = {...body, listened: listened };
         };
 
-        fetch(`http://localhost:3000/user_episodes/${id}`, {
+        fetch(`${url}user_episodes/${id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type':'application/json',
@@ -114,7 +115,6 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
 
         //If track is already playing, save current time to DB
         if (playlist[0]){
-            console.log('playlist present');
             updateUserEpisode(userEpId, currentTime, null);
         };  
     }
@@ -168,11 +168,11 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
                 />
 
                 <ListItemIcon>
-                    <ListItemText secondary={`ID: ${userEpisode.id} / ${resumeTime}`} />
+                    <ListItemText secondary={resumeTime} />
                 
                     <span className="material-icons" onClick={()=>updateUserEpisode(userEpisode.id, 0, null)}>
                     delete_outline
-                </span>
+                    </span>
                 </ListItemIcon>
 
                 <ListItemIcon onClick={()=>setShowDesc(!showDesc)} style={{color:'white'}}>
