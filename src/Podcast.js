@@ -15,7 +15,6 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
 
     const dispatch = useDispatch();
     const userEpisodes = useSelector(state => state.episodes.userEpisodes);
-    console.log(title, userEpisodes);
 
     useEffect(() => {
         //Retrieve all entries of episodes the user has interacted with from backend
@@ -24,7 +23,6 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
             fetch(`http://localhost:3000/userepisodes/${user.id}/${podcast.id}`)
                 .then(r => r.json())
                 .then(userEps => {
-                    console.log(title, userEps)
                     dispatch(setUserEpisodes(userEps))
                 })
         }

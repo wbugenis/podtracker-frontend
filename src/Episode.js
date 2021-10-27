@@ -77,7 +77,6 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
 
     //userEpisode will only ever need to update time or listened status
     const updateUserEpisode = (id, time, listened) => {
-        console.log(id, time, listened);
         let body = {id: id};
 
         if(time || time === 0){
@@ -87,8 +86,6 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
         if(listened !== null){
             body = {...body, listened: listened };
         };
-
-        console.log("body", body);
 
         fetch(`http://localhost:3000/user_episodes/${id}`, {
             method: 'PATCH',
@@ -101,7 +98,6 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
             .then(r => r.json())
             .then(updatedEpisode => {
                 dispatch(updateUserEpisodes(updatedEpisode));
-                console.log("updated", updatedEpisode);
             });
     } 
 
@@ -109,7 +105,6 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
     //Runs when play button or "listened" buttons are clicked
     const saveUserEpisode = () =>{
         //Save episode to DB if no entry for episode is present
-        console.log("ep found", userEpisode);
         if(userEpisode.id === undefined){
             createUserEpisode(false);
         } else {
@@ -117,8 +112,6 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
             dispatch(changeId({id: userEpisode.id}));
         }
 
-        console.log(userEpisode, userEpisode.id);
-    
         //If track is already playing, save current time to DB
         if (playlist[0]){
             console.log('playlist present');
@@ -140,7 +133,6 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
     
     return (
         <>
-        <div onClick={()=> console.log(userEpisode)}>click me</div>
             <ListItem >
                 <ListItemIcon>
 
