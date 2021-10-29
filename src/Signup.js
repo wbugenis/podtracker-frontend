@@ -6,7 +6,7 @@ const Signup = ({setUser}) =>{
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState([]) ;
-    console.log("errors is", errors);
+    console.log("errors are", errors);
 
     const handleSignup = (event) =>{
         event.preventDefault();

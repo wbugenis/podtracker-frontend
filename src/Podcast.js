@@ -30,7 +30,6 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
         fetch(`${url}podcasts/${id}/feed`)
             .then(r => r.json())
             .then(feed => {
-                console.log(feed)
                 const episodes = [];
 
                 feed.channel.item.forEach(item => {
