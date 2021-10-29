@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
-import Parser from "rss-parser";
-//https://www.npmjs.com/package/rss-parser
+
 import Episode from "./Episode";
 import { Grid, List, ListSubheader } from "@material-ui/core";
 
@@ -11,7 +10,7 @@ import { setUserEpisodes } from './redux/epSlice';
 
 const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, setPodComponents, togglePodcastDisplay}) => {
     const url = process.env.REACT_APP_RAILS_URL;
-    const parser = new Parser();
+    
     const {id, title, description, podcast_img_url, podcast_home_url} = podcast;
     const [episodes, setEpisodes] = useState([]);
 
