@@ -5,7 +5,8 @@ const Login = ({setUser, setMessage}) =>{
     const url = process.env.REACT_APP_RAILS_URL;
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    console.log(url)
+    console.log("server url:", url);
+
     const handleLogin = (event) =>{
         event.preventDefault();
 
