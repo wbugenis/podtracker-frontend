@@ -3,17 +3,16 @@ import SearchBar from "./SearchBar";
 import ResultsContainer from "./ResultsContainer";
 
 const Search = ({user, setMessage, subscriptions}) => {
-    const url = process.env.RAILS_URL;
+    const url = process.env.REACT_APP_RAILS_URL;
     const [searchTerm, setSearchTerm] = useState("");
     const [results, setResults] = useState([]);
 
     const handleSearch = (search) => {
-        setSearchTerm(search) ;
+        setSearchTerm(search);
         fetch(`${url}search/${search}`)
             .then(r => r.json())
-            .then(resultsObj => { setResults(resultsObj) }
-        );
-    };
+            .then(resultsObj => setResults(resultsObj.results))
+    }
 
     return (
         <div style={{justifyContent:'center'}}>

@@ -16,7 +16,7 @@ import { PlayerContextProvider } from '@cassette/core';
 const App = () => {
   const url = process.env.REACT_APP_RAILS_URL;
   const [user, setUser] = useState({id: null});
-  const [message, setMessageText] = useState({msg:"", severity:""});
+  const [message, setMessageText] = useState({msg:"", severity:"info"});
   const [showSnack, setShowSnack] = useState(false);
   const [subscriptions, setSubscriptions] = useState([]);
   const history = useHistory();

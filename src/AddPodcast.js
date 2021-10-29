@@ -23,7 +23,9 @@ const AddPodcast = ({user, setMessage}) => {
             },
             body: JSON.stringify({podcast, user})
         })
-            .then(r => r.json())
+            .then(r => {
+                console.log(r)
+                r.json()})
             .then(newPod => {
                 setMessage({msg: `Subscribed to ${newPod.title}`, severity:"success"});
                 // Jump to podcast display page after subscription

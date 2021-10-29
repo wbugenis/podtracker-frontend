@@ -38,7 +38,7 @@ const Result = ({user, result, setMessage, subscriptions}) => {
             title: result.collectionName,
             rss_feed: result.feedUrl.replace(reactURL, ''),
             podcast_img_url: result.artworkUrl600.replace(reactURL, ''),
-            description: info.description,
+            description: info.description.replace(/(<([^>]+)>)/gi, ""),
             podcast_home_url: info.homepage.replace(reactURL, ''),
         };
 
@@ -63,11 +63,11 @@ const Result = ({user, result, setMessage, subscriptions}) => {
                 <img src={result.artworkUrl100} alt={result.collectionName}/>
                 <div className='description-text'>
                     <h2 style={{margin: '5px 0px 5px 0px'}}>{result.collectionName}</h2>
-                    <p style={{margin: '2px 2px 2px 2px'}}>{info.description}</p>
+                    <p style={{margin: '2px 2px 2px 2px'}}>{info.description ? info.description.replace(/(<([^>]+)>)/gi, "") : ""}</p>
                     <br />
                     <span style={{display:'inline-flex'}}>
                         <div>{subscribed ? <button disabled>Subscribed</button> : <button onClick={trackPodcast}>Track Podcast</button>}</div>
-                        <a href={info.homepage} target="_blank" rel="noreferrer" style={{margin:'0px 15px 0px 15px'}}>Podcast Homepage</a>
+                        {info.homepage && !info.homepage.includes(reactURL) ? <a href={info.homepage} target="_blank" rel="noreferrer" style={{margin:'0px 15px 0px 15px'}}>Podcast Homepage</a> : <div>Homepage Unavailable</div>}
                         <a href={result.feedUrl}>RSS Feed</a>
                     </span>
                 </div>
