@@ -123,6 +123,7 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
 
     //Starts episode playback in Casettte player
     const play = () => {
+        
         //Replace first track of playlist with clicked episode
         setPlaylist([episode].concat(playlist.slice(1)));
 
@@ -142,7 +143,7 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
                         play_arrow
                     </span>
 
-                    <span className="material-icons" onClick={()=>setPlaylist(playlist.concat(userEpisode))}>
+                    <span className="material-icons" onClick={ ()=>setPlaylist(playlist.concat(episode)) }>
                         playlist_add
                     </span>
 
