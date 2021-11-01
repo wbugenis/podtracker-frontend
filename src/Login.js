@@ -5,13 +5,13 @@ const Login = ({setUser, setMessage}) =>{
     const url = process.env.REACT_APP_RAILS_URL;
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    console.log("hello");
-    console.log("server url:", url);
 
     const handleLogin = (event) =>{
         event.preventDefault();
 
-        fetch(`${url}login`, {
+        let fetchUrl = url + 'login';
+
+        fetch(fetchUrl, {
             method: "POST",
             headers: {
               'Content-Type':'application/json',
@@ -34,7 +34,6 @@ const Login = ({setUser, setMessage}) =>{
                 setUser(user);
             })
             .catch((response) => {
-                console.log(response);
                 if(response.toString().includes("TypeError")){
                     response = {errors: ["Server Error"]};
                 };

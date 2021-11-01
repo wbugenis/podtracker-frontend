@@ -40,7 +40,8 @@ const App = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      fetch(`${url}/me`, {
+      let fetchUrl = url + 'me';
+      fetch(fetchUrl, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -9,7 +9,8 @@ const Search = ({user, setMessage, subscriptions}) => {
 
     const handleSearch = (search) => {
         setSearchTerm(search);
-        fetch(`${url}search/${search}`)
+        let fetchUrl = url + 'search/' + search;
+        fetch(fetchUrl)
             .then(r => r.json())
             .then(resultsObj => setResults(resultsObj.results))
     }

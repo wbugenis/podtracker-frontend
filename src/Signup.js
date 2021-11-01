@@ -5,12 +5,12 @@ const Signup = ({setUser}) =>{
     const url = process.env.REACT_APP_RAILS_URL;
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState([]) ;
-    console.log("errors are", errors, url);
+    const [errors, setErrors] = useState([]);
 
     const handleSignup = (event) =>{
         event.preventDefault();
-        fetch(`${url}users`, {
+        let fetchUrl = url + 'users';
+        fetch(fetchUrl, {
             method: "POST",
             headers: {
               'Content-Type':'application/json',
@@ -33,11 +33,11 @@ const Signup = ({setUser}) =>{
                 setUser(user);
             })
             .catch((response) =>{
-                console.log(response);
+
                 if(response.toString().includes("TypeError")){
                     response = {errors: ["Server Error"]}
                 }
-                console.log(response);
+                
                 setErrors(response.errors);
             });
     };

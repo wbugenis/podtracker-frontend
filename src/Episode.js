@@ -54,7 +54,8 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
 
     //Create new entry for episode in DB
     const createUserEpisode = (listened) => {
-        fetch(`${url}user_episodes`, {
+        let fetchUrl = url+'user_episodes';
+        fetch(fetchUrl, {
             method: 'POST',
             headers: {
                 'Content-Type':'application/json',
@@ -88,7 +89,8 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
             body = {...body, listened: listened };
         };
 
-        fetch(`${url}user_episodes/${id}`, {
+        let fetchUrl = url + 'user_episodes/' + id;
+        fetch(fetchUrl, {
             method: 'PATCH',
             headers: {
                 'Content-Type':'application/json',

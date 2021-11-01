@@ -21,13 +21,15 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
     useEffect(() => {
         //Retrieve all entries of episodes the user has interacted with from backend
         if(userEpisodes.length < 1){
-            fetch(`${url}userepisodes/${user.id}/${podcast.id}`)
+            let fetchUrl = url + 'userepisodes/' + user.id + '/' + podcast.id;
+            fetch(fetchUrl)
                 .then(r => r.json())
                 .then(userEps => dispatch(setUserEpisodes(userEps)))
         }
 
         //Get object of parsed XML feed
-        fetch(`${url}podcasts/${id}/feed`)
+        let fetchUrl = url + 'podcasts/' + id + '/feed'
+        fetch(fetchUrl)
             .then(r => r.json())
             .then(feed => {
                 const episodes = [];
@@ -36,13 +38,13 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
                     //Ternary statements prevent app from breaking if RSS feed fields aren't properly filled
                     episodes.push({
                         title: item.title||"Not provided",
-                        description: item.content||"Not provided",
+                        description: item.description||"Not provided",
                         runtime: (item.itunes_duration ? prettyTime(item.itunes_duration.content) : "Not provided"),
                         pubDate: item.pubDate.slice(0,16)||"Not provided",
                         url: (item.enclosure ? item.enclosure.url : "Not provided")
                     })
                 })
-
+                
                 setEpisodes(episodes);
             })
     }, [])

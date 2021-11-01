@@ -9,7 +9,8 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
    
     //Retrieve all of user's subscribed podcasts
     useEffect(()=> {
-        fetch(`${url}user/${user.id}/subscriptions`)
+        let fetchUrl = url + 'user/' + user.id + '/subscriptions'
+        fetch(fetchUrl)
             .then(r => r.json())
             .then(subscriptions => {
                 setSubscriptions(subscriptions);
@@ -27,7 +28,8 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
 
     //Unsubscribe from podcast
     const unsubscribe = (title, sub_id) => {
-        fetch(`${url}subscriptions/${sub_id}`, {
+        let fetchUrl = url + 'subscriptions/' + sub_id;
+        fetch(fetchUrl, {
             method:'DELETE'
         })
             .then(()=> {

@@ -19,7 +19,8 @@ const Result = ({user, result, setMessage, subscriptions}) => {
     //Fetch info not available from iTunes from podcast's RSS feed
     const showInfo = () => {
         const rss = result.feedUrl;
-        fetch(`${url}search/info`, {
+        let fetchUrl = url + 'search/info';
+        fetch(fetchUrl, {
             method: "POST",
             headers: {
                 'Content-Type':'application/json',
@@ -42,7 +43,8 @@ const Result = ({user, result, setMessage, subscriptions}) => {
             podcast_home_url: info.homepage.replace(reactURL, ''),
         };
 
-        fetch(`${url}subscriptions`, {
+        let fetchUrl = url + 'subscriptions';
+        fetch(fetchUrl, {
             method: "POST", 
             headers: {
                 'Content-Type':"application/json",
