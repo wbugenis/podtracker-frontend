@@ -146,9 +146,9 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
                         play_arrow
                     </span>
 
-                    <span className="material-icons" onClick={ ()=>setPlaylist(playlist.concat(episode)) }>
+                    {/* <span className="material-icons" onClick={ ()=>setPlaylist(playlist.concat(episode)) }>
                         playlist_add
-                    </span>
+                    </span> */}
 
                     {userEpisode.listened ?
                         <span className="material-icons" onClick={()=>updateUserEpisode(userEpisode.id, null, false)}>
