@@ -85,7 +85,7 @@ h4 {
   border-radius: 25px;
   margin: 10px 10px 10px 10px;
   padding: 10px 10px 10px 10px;
-  height:315px;
+  height:300px;
   overflow-x: auto;
 }
 
@@ -100,12 +100,8 @@ h4 {
   border-radius: 25px;
  
   height:280px;
-  width:280px;
-  
+  min-width:245px;
   z-index: 1;
-  margin: 1px 4px 4px 1px;
-  padding: 10px;
-  box-sizing: border-box;
 }
 
 .episode-container {

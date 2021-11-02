@@ -8,6 +8,7 @@ const Search = ({user, setMessage, subscriptions}) => {
     const [results, setResults] = useState([]);
 
     const handleSearch = (search) => {
+        setResults([]);
         setSearchTerm(search);
         let fetchUrl = url + 'search/' + search;
         fetch(fetchUrl)

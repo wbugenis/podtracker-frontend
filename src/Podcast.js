@@ -28,7 +28,7 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
         }
 
         //Get object of parsed XML feed
-        let fetchUrl = url + 'podcasts/' + id + '/feed'
+        let fetchUrl = url + 'podcasts/' + id + '/feed';
         fetch(fetchUrl)
             .then(r => r.json())
             .then(feed => {
@@ -40,11 +40,11 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
                         title: item.title||"Not provided",
                         description: item.description||"Not provided",
                         runtime: (item.itunes_duration ? prettyTime(item.itunes_duration.content) : "Not provided"),
-                        pubDate: item.pubDate.slice(0,16)||"Not provided",
+                        pubDate: item.pubDate.slice(0,10)||"Not provided",
                         url: (item.enclosure ? item.enclosure.url : "Not provided")
                     })
                 })
-                
+
                 setEpisodes(episodes);
             })
     }, [])
@@ -108,14 +108,14 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
     }
 
     return (
-        <Grid item className="podcast-div"  style={{margin:'1px 4px 1px 4px', padding: '2px 2px 2px 2px'}}>
+        <Grid item className="podcast-div" style={{padding:'5px', margin:'0px 5px 5px 0px'}} >
             <h4>{title}</h4>
             <img src={podcast_img_url} alt={title} onClick={showEpisodes} />
             <br />
             <span className="material-icons" onClick={handleUnsubscribe}>
                 delete_outline
             </span>
-            <a href={podcast_home_url} target="_blank" rel="noreferrer" className="material-icons">home</a>
+            <a href={podcast_home_url} target="_blank" rel="noreferrer" className="material-icons" style ={{textDecoration:"none"}}>home</a>
             <br />
         </Grid>
     )

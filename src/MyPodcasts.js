@@ -39,7 +39,7 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
     }
 
     const podcastComps = subscriptions.map(subscription =>   
-        <Podcast 
+        <Podcast
             user={user} 
             unsubscribe={unsubscribe} 
             sub_id={subscription.id} 

@@ -175,10 +175,13 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
 
                 <ListItemIcon>
                     <ListItemText secondary={resumeTime} />
-                
-                    <span className="material-icons" onClick={()=>updateUserEpisode(userEpisode.id, 0, null)}>
-                    delete_outline
-                    </span>
+                    {userEpisode. current_time > 0 ? 
+                        <span className="material-icons" onClick={()=>updateUserEpisode(userEpisode.id, 0, null)}>
+                        delete_outline
+                        </span>
+                    :
+                        ""
+                    }
                 </ListItemIcon>
 
                 <ListItemIcon onClick={()=>setShowDesc(!showDesc)} style={{color:'white'}}>

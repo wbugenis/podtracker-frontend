@@ -15,10 +15,15 @@ const Result = ({user, result, setMessage, subscriptions}) => {
             };
         });
     }, []);
+    
+    //Handle "show info" click - get podcast info and display
+    const showInfo = () => {
+        getInfo();
+        setShowMore(true);
+    }
 
     //Fetch info not available from iTunes from podcast's RSS feed
     const getInfo = () => {
-        setShowMore(true);
         const rss = result.feedUrl;
         let fetchUrl = url + 'search/info';
         fetch(fetchUrl, {
@@ -34,8 +39,13 @@ const Result = ({user, result, setMessage, subscriptions}) => {
     }
     
     //Save podcast to DB for tracking
-    const trackPodcast = () => {
+    const trackPodcast = async () => {
         
+        //Get description/homepage for saving to DB if not shown on page yet
+        if(!showMore){
+            await getInfo();
+        }
+
         const podcast = {
             title: result.collectionName,
             rss_feed: result.feedUrl.replace(reactURL, ''),
@@ -45,6 +55,7 @@ const Result = ({user, result, setMessage, subscriptions}) => {
         };
 
         let fetchUrl = url + 'subscriptions';
+
         fetch(fetchUrl, {
             method: "POST", 
             headers: {
@@ -66,7 +77,7 @@ const Result = ({user, result, setMessage, subscriptions}) => {
             <div className='description-text'>
                 <span style={{display:'inline-flex'}}>
                     <h2 style={{margin: '5px 0px 10px 0px'}}>{result.collectionName}</h2>
-                    <a href={result.feedUrl} target="_blank" className="material-icons" style ={{textDecoration:"none"}}>rss_feed</a>
+                    <a href={result.feedUrl} target="_blank" rel="noreferrer" className="material-icons" style ={{textDecoration:"none"}}>rss_feed</a>
                 </span>
                 <div>{subscribed ? 
                         <button disabled>Subscribed</button> 
@@ -77,7 +88,7 @@ const Result = ({user, result, setMessage, subscriptions}) => {
                 <br />
                 <div>
                     {!showMore ? 
-                        <button onClick={getInfo}>Show Info</button> 
+                        <button onClick={showInfo}>Show Info</button> 
                     :
                         <div>
 
