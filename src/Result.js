@@ -4,8 +4,8 @@ const Result = ({user, result, setMessage, subscriptions}) => {
     const url = process.env.REACT_APP_RAILS_URL;
     const reactURL = process.env.REACT_APP_FRONT_URL;
     const [info, setInfo] = useState({description: "", homepage:""});
+    const [showMore, setShowMore] = useState(false);
     const [subscribed, setSubscribed] = useState(false);
-    useEffect(()=> showInfo(), []);
 
     //Check if user is already subscribed to any of podcasts in search results by RSS URL
     useEffect(()=>{
@@ -17,7 +17,8 @@ const Result = ({user, result, setMessage, subscriptions}) => {
     }, []);
 
     //Fetch info not available from iTunes from podcast's RSS feed
-    const showInfo = () => {
+    const getInfo = () => {
+        setShowMore(true);
         const rss = result.feedUrl;
         let fetchUrl = url + 'search/info';
         fetch(fetchUrl, {
@@ -60,21 +61,52 @@ const Result = ({user, result, setMessage, subscriptions}) => {
     };
 
     return (
-        <>
-            <div className='description'>
-                <img src={result.artworkUrl100} alt={result.collectionName}/>
-                <div className='description-text'>
-                    <h2 style={{margin: '5px 0px 5px 0px'}}>{result.collectionName}</h2>
-                    <p style={{margin: '2px 2px 2px 2px'}}>{info.description ? info.description.replace(/(<([^>]+)>)/gi, "") : ""}</p>
-                    <br />
-                    <span style={{display:'inline-flex'}}>
-                        <div>{subscribed ? <button disabled>Subscribed</button> : <button onClick={trackPodcast}>Track Podcast</button>}</div>
-                        {info.homepage && !info.homepage.includes(reactURL) ? <a href={info.homepage} target="_blank" rel="noreferrer" style={{margin:'0px 15px 0px 15px'}}>Podcast Homepage</a> : <div>Homepage Unavailable</div>}
-                        <a href={result.feedUrl}>RSS Feed</a>
-                    </span>
+        <div className='description'>
+            <img src={result.artworkUrl100} alt={result.collectionName}/>
+            <div className='description-text'>
+                <span style={{display:'inline-flex'}}>
+                    <h2 style={{margin: '5px 0px 10px 0px'}}>{result.collectionName}</h2>
+                    <a href={result.feedUrl} target="_blank" className="material-icons" style ={{textDecoration:"none"}}>rss_feed</a>
+                </span>
+                <div>{subscribed ? 
+                        <button disabled>Subscribed</button> 
+                    : 
+                        <button onClick={trackPodcast}>Track Podcast</button>
+                    }
                 </div>
-            </div> 
-        </>
+                <br />
+                <div>
+                    {!showMore ? 
+                        <button onClick={getInfo}>Show Info</button> 
+                    :
+                        <div>
+
+                            <p style={{margin: '2px 2px 2px 2px'}}>
+                                {info.description ? 
+                                    info.description.replace(/(<([^>]+)>)/gi, "") 
+                                : 
+                                    "" 
+                                }
+                            </p>
+
+                            <p>
+                            {info.homepage ? 
+                                    <a href={info.homepage} 
+                                    target="_blank" 
+                                    rel="noreferrer" 
+                                    style={{margin:'0px 15px 0px 15px'}}>
+                                        Homepage
+                                    </a> 
+                                : 
+                                    ""
+                            }
+                            </p>
+
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>   
     )
 }
 
