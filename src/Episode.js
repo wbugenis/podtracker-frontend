@@ -73,7 +73,10 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
             .then(savedEp => {
                 dispatch(changeId({id: savedEp.id}));
                 dispatch(addUserEpisodes(savedEp));
-                play();
+                //Doesn't play episode if userEpisode was created to mark as listened
+                if(!listened){
+                    play();
+                }
             })                
     }
 
@@ -123,7 +126,7 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
 
     //Starts episode playback in Casettte player
     const play = () => {
-        
+
         //Replace first track of playlist with clicked episode
         setPlaylist([episode].concat(playlist.slice(1)));
 
