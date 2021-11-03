@@ -11,12 +11,17 @@ import { setUserEpisodes } from './redux/epSlice';
 const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, setPodComponents, togglePodcastDisplay}) => {
     const url = process.env.REACT_APP_RAILS_URL;
     
-    const {id, title, description, podcast_img_url, podcast_home_url} = podcast;
+    const {id, description, podcast_img_url, podcast_home_url} = podcast;
+    let {title} = podcast;
     const [episodes, setEpisodes] = useState([]);
-
+    
     const dispatch = useDispatch();
     const userEpisodes = useSelector(state => state.episodes.userEpisodes);
 
+    //Trim podcast title so it fits in display
+    if(title.length > 70){
+        title = podcast.title.slice(0, 70) + '...';
+    }
 
     useEffect(() => {
         //Retrieve all entries of episodes the user has interacted with from backend
@@ -70,9 +75,9 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
     const podComponents = (
         <>
             <div className='description'>
-                <img src={podcast_img_url} alt={title}/>
+                <img src={podcast_img_url} alt={podcast.title}/>
                 <div className='description-text'>
-                    <h2 style={{margin: '5px 0px 5px 0px'}}>{title}</h2>
+                    <h2 style={{margin: '5px 0px 5px 0px'}}>{podcast.title}</h2>
                     <p style={{margin: '2px 2px 2px 2px'}}>{description.replace(/(<([^>]+)>)/gi, "")}</p>
                 </div>
             </div>
@@ -108,8 +113,8 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
     }
 
     return (
-        <Grid item className="podcast-div" style={{padding:'5px', margin:'0px 5px 5px 0px'}} >
-            <h4>{title}</h4>
+        <Grid item xs={1} className="podcast-div" style={{padding:'5px', margin:'0px 5px 5px 0px' }} >
+            <h4 style={{height:'52px'}}>{title}</h4>
             <img src={podcast_img_url} alt={title} onClick={showEpisodes} />
             <br />
             <span className="material-icons" onClick={handleUnsubscribe}>

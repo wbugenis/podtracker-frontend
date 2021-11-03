@@ -69,9 +69,11 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
                     </div>
                     
                     <Grid 
-                        container spacing={4} 
+                        // container spacing={4} 
+        
                         className='podcast-grid' 
                         style={{
+                            maxWidthXs:'245px',
                             display: podcastDisplay,
                             flexBasis:'unset',
                             flexWrap:'nowrap', 
