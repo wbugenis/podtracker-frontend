@@ -1,15 +1,19 @@
 body {
   position: absolute;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "Monaco";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* font-style: 'Gill Sans'; */
-  font-style: 'Monaco';
-  color: white;
-  background-color: midnightblue;
+  color: white; 
+}
+
+html{
+  background-image: linear-gradient(midnightblue, dimgrey);
+  min-height: 100%;
+  min-width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0
 }
 
 code {
@@ -26,30 +30,39 @@ code {
   grid-template-areas: 
     "logo player"
     "nav content";
-  grid-template-columns: 200px auto;
-  grid-template-rows: 100px auto;
-  /* background-image: linear-gradient(grey, black); */
-}
-
-.navlink {
-  color:white;
-}
-.navlink active{
-  color: green;
-}
-
-.MuiTypography-colorTextSecondary{
-  color:white;
+  grid-template-columns: 210px auto;
+  grid-template-rows: 65px auto;
 }
 
 aside {
   grid-area: nav;
-  display:inline-flex;
+  display:flex;
   position: sticky;
   top: 0;
-  padding-left: 8px;
+  margin-top: 50px;
   flex-direction: column;
+  text-align: center;
   /* height: 500px; */
+}
+
+.navlink {
+  color:white;
+  border-radius: 50px;
+  border: 5px solid black;
+  text-decoration: none;
+  padding: 10px 10px 10px 10px;
+  margin-left: 0px;
+  width: 150px;
+}
+
+.active{
+  color: green;
+  font-style: italic;
+  margin-left: 20px;
+}
+
+.MuiTypography-colorTextSecondary{
+  color:white;
 }
 
 section {
@@ -100,7 +113,7 @@ h4 {
   text-align: center;
   border-radius: 25px;
  
-  height:280px;
+  height:290px;
   min-width:220px;
   z-index: 1;
 }

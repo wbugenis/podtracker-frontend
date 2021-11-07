@@ -114,7 +114,7 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
 
     return (
         <Grid item xs={1} className="podcast-div" style={{padding:'5px', margin:'0px 5px 5px 0px' }} >
-            <h4 style={{height:'52px'}}>{title}</h4>
+            <h4 style={{height:'60px'}}>{title}</h4>
             <img src={podcast_img_url} alt={title} onClick={showEpisodes} />
             <br />
             <span className="material-icons" onClick={handleUnsubscribe}>

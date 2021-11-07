@@ -56,7 +56,7 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
         <> 
             {subscriptions.length > 0 ? 
                 <>
-                    <div onClick={()=>togglePodcastDisplay()}>
+                    <div onClick={()=>togglePodcastDisplay()} style={{textAlign:"center"}}>
                     {podcastDisplay === 'flex' ? 
                         <span className="material-icons">
                         expand_less 
@@ -69,8 +69,6 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
                     </div>
                     
                     <Grid 
-                        // container spacing={4} 
-        
                         className='podcast-grid' 
                         style={{
                             maxWidthXs:'245px',

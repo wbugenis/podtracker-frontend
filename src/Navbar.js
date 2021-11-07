@@ -17,7 +17,7 @@ const Navbar = ({setUser}) => {
           
             <br/>
 
-            <NavLink to="/search" className="navlink">
+            <NavLink to="/search" className="navlink" >
                 Search
             </NavLink>
         
