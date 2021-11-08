@@ -8,13 +8,14 @@ import prettyTime from './prettyTime';
 import { useSelector, useDispatch} from 'react-redux';
 import { setUserEpisodes } from './redux/epSlice';
 
-const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, setPodComponents, togglePodcastDisplay}) => {
+const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, setPodInfo, setPodEpisodes, togglePodcastDisplay}) => {
     const url = process.env.REACT_APP_RAILS_URL;
     
     const {id, description, podcast_img_url, podcast_home_url} = podcast;
     let {title} = podcast;
-    const [episodes, setEpisodes] = useState([]);
-    
+    const [showing, setShowing] = useState(false);
+    const [episodeComps, setEpisodeComps] = useState([]);
+    const [episodeList, setEpisodeList] = useState(null);
     const dispatch = useDispatch();
     const userEpisodes = useSelector(state => state.episodes.userEpisodes);
 
@@ -50,30 +51,59 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
                     })
                 })
 
-                setEpisodes(episodes);
+                setEpisodeComps(episodes.map(episode => 
+                    <Episode 
+                        user={user} 
+                        episode={episode} 
+                        key={episode.title}
+                        setPlaylist={setPlaylist}
+                        podcastId={podcast.id} 
+                        setMessage={setMessage}
+                        artwork={[{src:podcast_img_url, sizes:'196x196', type:'image/jpg'}]}
+                        artist={podcast.title}
+                    />)
+                )
+
             })
     }, [])
     
+    useEffect(() => {
+        if(showing === true){
+            setPodEpisodes(<List 
+                component="nav"
+                aria-labelledby="nested-list-subheader"
+                style={{
+                    overflowY:'scroll',
+                    backgroundColor: 'rgba(144,144,144,0.5)',
+                    borderRadius:'15px',
+                    height:'600px',
+                    width:'800px'
+                }}
+                subheader={
+                    <ListSubheader 
+                        component="div" 
+                        id="nested-list-subheader" 
+                        className="episode-container"
+                        style={{backgroundColor: 'rgba(144,144,144,1)'}}
+                    >
+                        Episodes
+                    </ListSubheader>
+                }
+            >
+                {episodeComps} 
+            </List>)
+        }
+    }, [episodeComps, showing])
+
     const handleUnsubscribe = () => {
         unsubscribe(title, sub_id)
-        setEpisodes([]);
-        setPodComponents(null);
+        setEpisodeComps(null);
+        setPodInfo(null);
+        setPodEpisodes(null)
+        setShowing(false);
     }
 
-    const episodeComps = episodes.map(episode => 
-        <Episode 
-            user={user} 
-            episode={episode} 
-            key={episode.title}
-            setPlaylist={setPlaylist}
-            podcastId={podcast.id} 
-            setMessage={setMessage}
-            artwork={[{src:podcast_img_url, sizes:'196x196', type:'image/jpg'}]}
-            artist={podcast.title}
-        />)
-        
-    const podComponents = (
-        <>
+    const podInfo = (
             <div className='description'>
                 <img src={podcast_img_url} alt={podcast.title}/>
                 <div className='description-text'>
@@ -81,35 +111,12 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
                     <p style={{margin: '2px 2px 2px 2px'}}>{description.replace(/(<([^>]+)>)/gi, "")}</p>
                 </div>
             </div>
-                <List 
-                    component="nav"
-                    aria-labelledby="nested-list-subheader"
-                    style={{
-                        overflowY:'scroll',
-                        backgroundColor: 'rgba(144,144,144,0.5)',
-                        borderRadius:'15px',
-                        height:'600px',
-                        width:'800px'
-                    }}
-                    subheader={
-                        <ListSubheader 
-                            component="div" 
-                            id="nested-list-subheader" 
-                            className="episode-container"
-                            style={{backgroundColor: 'rgba(144,144,144,1)'}}
-                        >
-                            Episodes
-                        </ListSubheader>
-                    }
-                >
-                    {episodeComps} 
-                </List>
-            </>
-        )
+    )
     
     const showEpisodes = () => {
+        setShowing(true);
         togglePodcastDisplay();
-        setPodComponents(podComponents);   
+        setPodInfo(podInfo);   
     }
 
     return (

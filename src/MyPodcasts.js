@@ -4,7 +4,8 @@ import Grid from '@material-ui/core/Grid';
 
 const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscriptions}) => {
     const url = process.env.REACT_APP_RAILS_URL;
-    const [podComponents, setPodComponents] = useState(null);
+    const [podInfo, setPodInfo] = useState(null);
+    const [podEpisodes, setPodEpisodes] = useState(null);
     const [podcastDisplay, setPodcastDisplay] = useState("flex");
    
     //Retrieve all of user's subscribed podcasts
@@ -47,7 +48,8 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
             key={subscription.podcast.title} 
             setPlaylist={setPlaylist}
             setMessage={setMessage}
-            setPodComponents={setPodComponents}
+            setPodInfo={setPodInfo}
+            setPodEpisodes={setPodEpisodes}
             togglePodcastDisplay={togglePodcastDisplay}
         />
     );
@@ -88,7 +90,8 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
                 <h2>You haven't subscribed to any podcasts yet!</h2>
             }
             <div id="podcast-detail">
-                {podComponents}
+                {podInfo}
+                {podEpisodes}
             </div>
         </>
     )
