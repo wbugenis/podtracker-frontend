@@ -11,7 +11,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import prettyTime from './prettyTime';
 
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { changeId, addUserEpisodes, updateUserEpisodes } from './redux/epSlice';
 
 const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
@@ -31,15 +31,28 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
     const dispatch = useDispatch();
 
     // Find any episodes a user has interacted with based on episodes titles from RSS listing
-    // Retrieves latest info after userEpisodes is touched
     useEffect(() => {
         const myEp = userEpisodes.find(userEpisode => userEpisode.title === title);
-
+        
         if (myEp){
             setUserEpisode(myEp);
             manageTime(myEp.current_time);
         }
+
+    }, [])
+
+    // Retrieves latest info after userEpisodes is edited
+    useEffect(() => {
+        const myEp = userEpisodes.find(userEpisode => userEpisode.title === title);
+        
+        if (myEp){
+            setUserEpisode(myEp);
+            manageTime(myEp.current_time);
+        }
+
     }, [userEpisodes])
+
+    
 
     //Creates a human-friendly timestamp readout
     const manageTime = (time) => {
@@ -71,10 +84,10 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
         })
             .then(r => r.json())
             .then(savedEp => {
-                dispatch(changeId({id: savedEp.id}));
                 dispatch(addUserEpisodes(savedEp));
                 //Doesn't play episode if userEpisode was created to mark as listened
                 if(!listened){
+                    dispatch(changeId(savedEp.id));
                     play();
                 }
             })                
@@ -107,15 +120,43 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
             });
     } 
 
+    const dbUserEpisode = ( title, time, listened ) => {
+        let body = {
+            user_id: user.id,
+            podcast_id: podcastId,
+            title: title
+        }
+
+        if(time || time === 0){
+            body = {...body, current_time: time };
+        };
+
+        if(listened !== null){
+            body = {...body, listened: listened };
+        };
+
+        let fetchUrl = url + `/user_episodes`
+        fetch(fetchUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json',
+                Accept: 'application/json'
+            },
+            body:JSON.stringify(body)
+        })
+    }
+
     //Checks if userEpisode is present for this episode, creates one if not 
     //Runs when play button or "listened" buttons are clicked
     const saveUserEpisode = () =>{
+        setMessage({msg:`Playing ${title}`, severity: "info"});
+
         //Save episode to DB if no entry for episode is present
         if(userEpisode.id === undefined){
             createUserEpisode(false);
         } else {
-            play();
-            dispatch(changeId({id: userEpisode.id}));
+            dispatch(changeId(userEpisode.id));
+            play(); 
         }
 
         //If track is already playing, save current time to DB
@@ -167,7 +208,11 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
                 </ListItemIcon>
                 
                 <ListItemText
-                    style={userEpisode.listened ? {textDecorationColor: 'red', color:"white", textDecorationLine: 'line-through', textDecorationStyle: 'solid', alignItems:'flex-start'} : {alignItems:'flex-start'}}
+                    style={userEpisode.listened ? 
+                        {textDecorationColor: 'red', color:"white", textDecorationLine: 'line-through', textDecorationStyle: 'solid', alignItems:'flex-start'} 
+                        : 
+                        {alignItems:'flex-start'}
+                    }
                     primary={title} 
                     onClick={()=>setShowDesc(!showDesc)}
                     secondary={`Runtime: ${runtime} | Published: ${pubDate}`}    
@@ -175,7 +220,7 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
 
                 <ListItemIcon>
                     <ListItemText secondary={resumeTime} />
-                    {userEpisode. current_time > 0 ? 
+                    {userEpisode.current_time > 0 ? 
                         <span className="material-icons" onClick={()=>updateUserEpisode(userEpisode.id, 0, null)}>
                         delete_outline
                         </span>
@@ -191,7 +236,7 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
             </ListItem>
             
             <Collapse in={showDesc} timeout="auto" unmountOnExit onClick={()=>setShowDesc(!showDesc)}>
-                <ListItemText primary={description.replace(/(<([^>]+)>)/gi, "")} styles={{margin:'10px', textSize:'8px'}}/>
+                <ListItemText inset="true" primary={description.replace(/(<([^>]+)>)/gi, "")} />
             </Collapse>
             <hr />
         </>

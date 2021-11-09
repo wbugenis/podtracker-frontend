@@ -10,13 +10,13 @@ export const epSlice = createSlice({
         changeId: (state, action) => {
             return {
             ...state,
-            epId: action.payload.id
+            epId: action.payload
             }
         },
         setUserEpisodes: (state, action) =>{
             return {
                 ...state,
-                userEpisodes: action.payload
+                userEpisodes: [...action.payload]
             }
         },
         addUserEpisodes: (state, action) => {
@@ -28,12 +28,12 @@ export const epSlice = createSlice({
         updateUserEpisodes: (state, action) =>{
             return {
                 ...state, 
-                userEpisodes: state.userEpisodes.map(ep => {
+                userEpisodes: [...state.userEpisodes.map(ep => {
                     if(ep.id === action.payload.id){
                         return action.payload
                     }
                     return ep
-                })
+                })]
             }
         }
     }

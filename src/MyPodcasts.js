@@ -1,17 +1,16 @@
 import React, {useState, useEffect} from "react";
 import Podcast from "./Podcast";
+import PodcastInfo from "./PodcastInfo";
 import Grid from '@material-ui/core/Grid';
 
 const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscriptions}) => {
     const url = process.env.REACT_APP_RAILS_URL;
-    const [podInfo, setPodInfo] = useState(null);
-    const [podEpisodes, setPodEpisodes] = useState(null);
+    const subsUrl = url + 'user/' + user.id + '/subscriptions';
     const [podcastDisplay, setPodcastDisplay] = useState("flex");
    
     //Retrieve all of user's subscribed podcasts
     useEffect(()=> {
-        let fetchUrl = url + 'user/' + user.id + '/subscriptions'
-        fetch(fetchUrl)
+        fetch(subsUrl)
             .then(r => r.json())
             .then(subscriptions => {
                 setSubscriptions(subscriptions);
@@ -48,8 +47,6 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
             key={subscription.podcast.title} 
             setPlaylist={setPlaylist}
             setMessage={setMessage}
-            setPodInfo={setPodInfo}
-            setPodEpisodes={setPodEpisodes}
             togglePodcastDisplay={togglePodcastDisplay}
         />
     );
@@ -58,7 +55,11 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
         <> 
             {subscriptions.length > 0 ? 
                 <>
-                    <div onClick={()=>togglePodcastDisplay()} style={{textAlign:"center"}}>
+                    <div 
+                        onClick={()=>togglePodcastDisplay()} 
+                        style={{textAlign:"center", fontWeight:"bold", fontSize: "25px"}}
+                    >
+
                     {podcastDisplay === 'flex' ? 
                         <span className="material-icons">
                         expand_less 
@@ -89,10 +90,12 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
             :
                 <h2>You haven't subscribed to any podcasts yet!</h2>
             }
-            <div id="podcast-detail">
-                {podInfo}
-                {podEpisodes}
-            </div>
+
+            <PodcastInfo 
+                user={user}
+                setPlaylist={setPlaylist}
+                setMessage={setMessage}
+            />
         </>
     )
 }

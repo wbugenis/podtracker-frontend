@@ -16,7 +16,7 @@ import { PlayerContextProvider } from '@cassette/core';
 const App = () => {
   const url = process.env.REACT_APP_RAILS_URL;
   const [user, setUser] = useState({id: null});
-  const [message, setMessageText] = useState({msg:"", severity:"info"});
+  const [message, setMessageText] = useState({msg:"", severity:"success"});
   const [showSnack, setShowSnack] = useState(false);
   const [subscriptions, setSubscriptions] = useState([]);
   const history = useHistory();
@@ -27,6 +27,12 @@ const App = () => {
   const setMessage = (newMessage) =>{
     setMessageText(newMessage);
     setShowSnack(true);
+  }
+
+  //Clear out message and set snackbar to hidden
+  const snackClose = () => {
+    setMessageText({msg:"", severity:"success"});
+    setShowSnack(false);
   }
 
   //Check local storage for user's JWT - if no token, redirect to login page
@@ -56,11 +62,7 @@ const App = () => {
     }
   }, []);
 
-  //Clear out message and set snackbar to hidden
-  const snackClose = () => {
-    setMessageText({msg:"", severity:""});
-    setShowSnack(false);
-  }
+  
 
   return (
     <PlayerContextProvider playlist={playlist}>

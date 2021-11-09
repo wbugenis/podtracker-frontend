@@ -1,48 +1,45 @@
 import React, {useState, useEffect} from "react";
 
-import Episode from "./Episode";
-import { Grid, List, ListSubheader } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 
 import prettyTime from './prettyTime';
 
 import { useSelector, useDispatch} from 'react-redux';
 import { setUserEpisodes } from './redux/epSlice';
+import { setDisplay, setInfo, setEpisodeList } from "./redux/podSlice";
 
-const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, setPodInfo, setPodEpisodes, togglePodcastDisplay}) => {
+const Podcast = ({ user, unsubscribe, podcast, sub_id, togglePodcastDisplay}) => {
     const url = process.env.REACT_APP_RAILS_URL;
     
-    const {id, description, podcast_img_url, podcast_home_url} = podcast;
-    let {title} = podcast;
-    const [showing, setShowing] = useState(false);
-    const [episodeComps, setEpisodeComps] = useState([]);
-    const [episodeList, setEpisodeList] = useState(null);
+    const [episodes, setEpisodes] = useState([]);
+
     const dispatch = useDispatch();
     const userEpisodes = useSelector(state => state.episodes.userEpisodes);
+    console.log(userEpisodes);
 
-    //Trim podcast title so it fits in display
-    if(title.length > 70){
-        title = podcast.title.slice(0, 70) + '...';
-    }
-
+    const { id, title, description, podcast_img_url, podcast_home_url } = podcast;
+    //Trim podcast title so it displays nicely in element
+    const shortTitle = podcast.title.slice(0, 70) + '...';
+    
     useEffect(() => {
         //Retrieve all entries of episodes the user has interacted with from backend
-        if(userEpisodes.length < 1){
-            let fetchUrl = url + 'userepisodes/' + user.id + '/' + podcast.id;
-            fetch(fetchUrl)
-                .then(r => r.json())
-                .then(userEps => dispatch(setUserEpisodes(userEps)))
-        }
+        //Getting UserEps
+        let fetchUserEps = url + 'userepisodes/' + user.id + '/' + podcast.id;
+        fetch(fetchUserEps)
+            .then(r => r.json())
+            .then(userEps => dispatch(setUserEpisodes(userEps)))
+        
 
         //Get object of parsed XML feed
-        let fetchUrl = url + 'podcasts/' + id + '/feed';
-        fetch(fetchUrl)
+        let fetchFeed = url + 'podcasts/' + id + '/feed';
+        fetch(fetchFeed)
             .then(r => r.json())
             .then(feed => {
-                const episodes = [];
+                const eps = [];
 
                 feed.channel.item.forEach(item => {
                     //Ternary statements prevent app from breaking if RSS feed fields aren't properly filled
-                    episodes.push({
+                    eps.push({
                         title: item.title||"Not provided",
                         description: item.description||"Not provided",
                         runtime: (item.itunes_duration ? prettyTime(item.itunes_duration.content) : "Not provided"),
@@ -50,79 +47,42 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, setPlaylist, setMessage, 
                         url: (item.enclosure ? item.enclosure.url : "Not provided")
                     })
                 })
-
-                setEpisodeComps(episodes.map(episode => 
-                    <Episode 
-                        user={user} 
-                        episode={episode} 
-                        key={episode.title}
-                        setPlaylist={setPlaylist}
-                        podcastId={podcast.id} 
-                        setMessage={setMessage}
-                        artwork={[{src:podcast_img_url, sizes:'196x196', type:'image/jpg'}]}
-                        artist={podcast.title}
-                    />)
-                )
-
+                
+                setEpisodes(eps);
             })
+
     }, [])
-    
-    useEffect(() => {
-        if(showing === true){
-            setPodEpisodes(<List 
-                component="nav"
-                aria-labelledby="nested-list-subheader"
-                style={{
-                    overflowY:'scroll',
-                    backgroundColor: 'rgba(144,144,144,0.5)',
-                    borderRadius:'15px',
-                    height:'600px',
-                    width:'800px'
-                }}
-                subheader={
-                    <ListSubheader 
-                        component="div" 
-                        id="nested-list-subheader" 
-                        className="episode-container"
-                        style={{backgroundColor: 'rgba(144,144,144,1)'}}
-                    >
-                        Episodes
-                    </ListSubheader>
-                }
-            >
-                {episodeComps} 
-            </List>)
-        }
-    }, [episodeComps, showing])
 
     const handleUnsubscribe = () => {
-        unsubscribe(title, sub_id)
-        setEpisodeComps(null);
-        setPodInfo(null);
-        setPodEpisodes(null)
-        setShowing(false);
+        dispatch(setDisplay("none"));
+        dispatch(setInfo({
+                id: null,
+                podcast_img_url: "",
+                title: "",
+                description: ""
+            })
+        );
+        dispatch(setEpisodeList([]));
+        unsubscribe(title, sub_id);
     }
-
-    const podInfo = (
-            <div className='description'>
-                <img src={podcast_img_url} alt={podcast.title}/>
-                <div className='description-text'>
-                    <h2 style={{margin: '5px 0px 5px 0px'}}>{podcast.title}</h2>
-                    <p style={{margin: '2px 2px 2px 2px'}}>{description.replace(/(<([^>]+)>)/gi, "")}</p>
-                </div>
-            </div>
-    )
     
-    const showEpisodes = () => {
-        setShowing(true);
+    const showEpisodes = () => { 
+        dispatch(setDisplay("block"));
+        dispatch(setInfo({
+                id: id,
+                podcast_img_url: podcast_img_url,
+                title: podcast.title,
+                description: description
+            })
+        )
+        dispatch(setEpisodeList(episodes));
         togglePodcastDisplay();
-        setPodInfo(podInfo);   
     }
 
     return (
         <Grid item xs={1} className="podcast-div" style={{padding:'5px', margin:'0px 5px 5px 0px' }} >
-            <h4 style={{height:'60px'}}>{title}</h4>
-            <img src={podcast_img_url} alt={title} onClick={showEpisodes} />
+            <h4 style={{height:'60px'}}>{shortTitle}</h4>
+            <img src={podcast_img_url} alt={shortTitle} onClick={showEpisodes} />
             <br />
             <span className="material-icons" onClick={handleUnsubscribe}>
                 delete_outline

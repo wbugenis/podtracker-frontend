@@ -50,8 +50,9 @@ const FwdSkip = () => {
 
 const Player = () => {
     const { playlist } = usePlayerContext(['playlist', 'onStateSnapshot']);
-
+    
     return (
+      
       <div id="player-div">
         <MediaPlayerControls
           playlist={playlist}
@@ -64,7 +65,7 @@ const Player = () => {
             'volume',
             'progress',
           ]} 
-        />  
+        />    
       </div>
     )
 }

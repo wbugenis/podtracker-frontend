@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 const Result = ({user, result, setMessage, subscriptions}) => {
     const url = process.env.REACT_APP_RAILS_URL;
     const reactURL = process.env.REACT_APP_FRONT_URL;
+    
     const [info, setInfo] = useState({description: "", homepage:""});
     const [showMore, setShowMore] = useState(false);
     const [subscribed, setSubscribed] = useState(false);
