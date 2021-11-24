@@ -1,18 +1,14 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 const Navbar = ({setUser}) => {
-    const userEpId = useSelector(state => state.episodes.epId); 
 
     const logout = () => {
         localStorage.removeItem("token");
-        setUser({id: null});
     }
 
     return (
         <aside>
-            <p>Episode ID: {userEpId}</p>
             
             <NavLink to="/mypodcasts" className="navlink">
                 My Podcasts

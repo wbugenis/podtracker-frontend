@@ -113,9 +113,9 @@ h4 {
   border: 1px solid;
   text-align: center;
   border-radius: 25px;
- 
-  height:290px;
-  min-width:220px;
+  position: relative;
+  height: 290px;
+  min-width: 220px;
   z-index: 1;
 }
 
@@ -157,3 +157,26 @@ h4 {
   width:125px;
   height:125px;
 }
+
+@keyframes rotater {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.podcast-loader{
+  position: absolute;
+  margin: 12px 30px;
+  width: 130px;
+  height: 130px;
+  border: solid 10px;
+  border-color: transparent white white transparent;
+  border-radius: 50%;
+  opacity: .8;
+  animation: rotater 2s linear infinite;
+}
+

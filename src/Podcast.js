@@ -5,7 +5,6 @@ import { Grid } from "@material-ui/core";
 import prettyTime from './prettyTime';
 
 import { useSelector, useDispatch} from 'react-redux';
-import { setUserEpisodes } from './redux/epSlice';
 import { setDisplay, setInfo, setEpisodeList } from "./redux/podSlice";
 
 const Podcast = ({ user, unsubscribe, podcast, sub_id, togglePodcastDisplay}) => {
@@ -15,21 +14,16 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, togglePodcastDisplay}) =>
 
     const dispatch = useDispatch();
     const userEpisodes = useSelector(state => state.episodes.userEpisodes);
-    console.log(userEpisodes);
 
     const { id, title, description, podcast_img_url, podcast_home_url } = podcast;
-    //Trim podcast title so it displays nicely in element
-    const shortTitle = podcast.title.slice(0, 70) + '...';
+    //Trim podcast title so it displays nicely in element, add ellipses if cut
+    let shortTitle = title.slice(0, 51);
+    if(title.length >= 51){
+        shortTitle += "...";
+    }
     
     useEffect(() => {
-        //Retrieve all entries of episodes the user has interacted with from backend
-        //Getting UserEps
-        let fetchUserEps = url + 'userepisodes/' + user.id + '/' + podcast.id;
-        fetch(fetchUserEps)
-            .then(r => r.json())
-            .then(userEps => dispatch(setUserEpisodes(userEps)))
         
-
         //Get object of parsed XML feed
         let fetchFeed = url + 'podcasts/' + id + '/feed';
         fetch(fetchFeed)
@@ -44,7 +38,8 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, togglePodcastDisplay}) =>
                         description: item.description||"Not provided",
                         runtime: (item.itunes_duration ? prettyTime(item.itunes_duration.content) : "Not provided"),
                         pubDate: item.pubDate.slice(0,10)||"Not provided",
-                        url: (item.enclosure ? item.enclosure.url : "Not provided")
+                        url: (item.enclosure ? item.enclosure.url : "Not provided"),
+                        podcastId: id
                     })
                 })
                 
@@ -66,7 +61,7 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, togglePodcastDisplay}) =>
         unsubscribe(title, sub_id);
     }
     
-    const showEpisodes = () => { 
+    const showEpisodes = () => {
         dispatch(setDisplay("block"));
         dispatch(setInfo({
                 id: id,
@@ -75,6 +70,7 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, togglePodcastDisplay}) =>
                 description: description
             })
         )
+
         dispatch(setEpisodeList(episodes));
         togglePodcastDisplay();
     }
@@ -82,6 +78,7 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, togglePodcastDisplay}) =>
     return (
         <Grid item xs={1} className="podcast-div" style={{padding:'5px', margin:'0px 5px 5px 0px' }} >
             <h4 style={{height:'60px'}}>{shortTitle}</h4>
+            {episodes.length === 0 ? <div className="podcast-loader"></div> : "" }
             <img src={podcast_img_url} alt={shortTitle} onClick={showEpisodes} />
             <br />
             <span className="material-icons" onClick={handleUnsubscribe}>

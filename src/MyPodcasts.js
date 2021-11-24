@@ -3,20 +3,34 @@ import Podcast from "./Podcast";
 import PodcastInfo from "./PodcastInfo";
 import Grid from '@material-ui/core/Grid';
 
+import { useDispatch} from 'react-redux';
+import { setUserEpisodes } from './redux/epSlice';
+
 const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscriptions}) => {
     const url = process.env.REACT_APP_RAILS_URL;
-    const subsUrl = url + 'user/' + user.id + '/subscriptions';
     const [podcastDisplay, setPodcastDisplay] = useState("flex");
-   
+
+    const dispatch = useDispatch();
+
     //Retrieve all of user's subscribed podcasts
+    const subsUrl = url + 'user/' + user.id + '/subscriptions';
     useEffect(()=> {
         fetch(subsUrl)
             .then(r => r.json())
             .then(subscriptions => {
                 setSubscriptions(subscriptions);
             })
+
+    //Retrieve all of user's userepisodes
+    let fetchUserEps = url + 'user_episodes/all/' + user.id;
+    fetch(fetchUserEps)
+        .then(r => r.json())
+        .then(userEps => dispatch(setUserEpisodes(userEps)))
+
     }, [])
 
+
+    //Shows or hides podcast selection bar/carousel
     const togglePodcastDisplay = () => {
         if(podcastDisplay === "flex"){
             setPodcastDisplay("none");

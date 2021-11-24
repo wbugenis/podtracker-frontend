@@ -30,7 +30,7 @@ const PodcastInfo = ({user, setPlaylist, setMessage}) => {
     return(
         <div id="podcast-detail" style={{display: display}}>
             <div className='description'>
-                <img src={info.podcast_img_url} alt={info.title}/>
+                <img src={info.podcast_img_url} alt={info.title} style={{margin:"auto auto", borderRadius:"10px"}}/>
                 <div className='description-text'>
                     <h2 style={{margin: '5px 0px 5px 0px'}}>{info.title}</h2>
                     <p style={{margin: '2px 2px 2px 2px'}}>{info.description.replace(/(<([^>]+)>)/gi, "")}</p>

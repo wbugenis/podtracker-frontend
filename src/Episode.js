@@ -12,7 +12,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import prettyTime from './prettyTime';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { changeId, addUserEpisodes, updateUserEpisodes } from './redux/epSlice';
+import { updateUserEpisodes } from './redux/epSlice';
 
 const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
     const url = process.env.REACT_APP_RAILS_URL;
@@ -26,7 +26,6 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
     });
     const [resumeTime, setResumeTime] = useState("");
 
-    const userEpId = useSelector(state => state.episodes.epId); 
     const userEpisodes = useSelector(state => state.episodes.userEpisodes);
     const dispatch = useDispatch();
 
@@ -46,13 +45,12 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
         const myEp = userEpisodes.find(userEpisode => userEpisode.title === title);
         
         if (myEp){
+            console.log(myEp.title, myEp.listened);
             setUserEpisode(myEp);
             manageTime(myEp.current_time);
         }
 
     }, [userEpisodes])
-
-    
 
     //Creates a human-friendly timestamp readout
     const manageTime = (time) => {
@@ -65,65 +63,11 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
         }
     }
 
-    //Create new entry for episode in DB
-    const createUserEpisode = (listened) => {
-        let fetchUrl = url+'user_episodes';
-        fetch(fetchUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type':'application/json',
-                Accept:'application/json'
-            },
-            body:JSON.stringify({
-                user_id: user.id,
-                podcast_id: podcastId,
-                listened: listened,
-                current_time: userEpisode.current_time,
-                title: title
-            })
-        })
-            .then(r => r.json())
-            .then(savedEp => {
-                dispatch(addUserEpisodes(savedEp));
-                //Doesn't play episode if userEpisode was created to mark as listened
-                if(!listened){
-                    dispatch(changeId(savedEp.id));
-                    play();
-                }
-            })                
-    }
-
-    //userEpisode will only ever need to update time or listened status
-    const updateUserEpisode = (id, time, listened) => {
-        let body = {id: id};
-
-        if(time || time === 0){
-            body = {...body, current_time: time };
-        };
-
-        if(listened !== null){
-            body = {...body, listened: listened };
-        };
-
-        let fetchUrl = url + 'user_episodes/' + id;
-        fetch(fetchUrl, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type':'application/json',
-                Accept: 'application/json'
-            },
-            body: JSON.stringify(body)
-        })
-            .then(r => r.json())
-            .then(updatedEpisode => {
-                dispatch(updateUserEpisodes(updatedEpisode));
-            });
-    } 
-
-    const dbUserEpisode = ( title, time, listened ) => {
+    //Saves user episodes to the database - backend will determine if it is a create or update
+    const dbUserEpisode = ( title, podId, time, listened ) => {
         let body = {
             user_id: user.id,
-            podcast_id: podcastId,
+            podcast_id: podId,
             title: title
         }
 
@@ -135,38 +79,30 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
             body = {...body, listened: listened };
         };
 
-        let fetchUrl = url + `/user_episodes`
+        let fetchUrl = url + `user_episodes/save`;
         fetch(fetchUrl, {
             method: 'POST',
             headers: {
                 'Content-Type':'application/json',
                 Accept: 'application/json'
             },
-            body:JSON.stringify(body)
+            body: JSON.stringify(body)
         })
+            .then(r => r.json())
+            .then(returnedEp => {
+                console.log(returnedEp)
+                dispatch(updateUserEpisodes(returnedEp))
+            })
     }
 
-    //Checks if userEpisode is present for this episode, creates one if not 
-    //Runs when play button or "listened" buttons are clicked
-    const saveUserEpisode = () =>{
+    //Handles click of play button on an episode
+    const handlePlayClick = () => {
         setMessage({msg:`Playing ${title}`, severity: "info"});
 
-        //Save episode to DB if no entry for episode is present
-        if(userEpisode.id === undefined){
-            createUserEpisode(false);
-        } else {
-            dispatch(changeId(userEpisode.id));
-            play(); 
-        }
-
-        //If track is already playing, save current time to DB
+        //If a track is playing, save to DB
         if (playlist[0]){
-            updateUserEpisode(userEpId, currentTime, null);
+            dbUserEpisode(playlist[0].title, playlist[0].podcast_id, currentTime, null);
         };  
-    }
-
-    //Starts episode playback in Casettte player
-    const play = () => {
 
         //Replace first track of playlist with clicked episode
         setPlaylist([episode].concat(playlist.slice(1)));
@@ -177,13 +113,13 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
             setTimeout(() => onSeekComplete(userEpisode.current_time), 100) 
         }, 500)  
     }
-    
+
     return (
         <>
             <ListItem >
                 <ListItemIcon>
 
-                    <span className="material-icons" onClick={() => saveUserEpisode()}>
+                    <span className="material-icons" onClick={handlePlayClick}>
                         play_arrow
                     </span>
 
@@ -192,24 +128,24 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
                     </span> */}
 
                     {userEpisode.listened ?
-                        <span className="material-icons" onClick={()=>updateUserEpisode(userEpisode.id, null, false)}>
+                        <span className="material-icons" onClick={()=>dbUserEpisode(title, podcastId, null, false)}>
                             remove_done
                         </span>
                         :
-                        userEpisode.id ? 
-                            <span className="material-icons" onClick={()=>updateUserEpisode(userEpisode.id, null, true)}>
-                                done
-                            </span>
-                            :
-                            <span className="material-icons" onClick={()=>createUserEpisode(true)}>
-                                done
-                            </span>   
+                        <span className="material-icons" onClick={()=>dbUserEpisode(title, podcastId, null, true)}>
+                            done
+                        </span>
                     }
+
                 </ListItemIcon>
                 
                 <ListItemText
                     style={userEpisode.listened ? 
-                        {textDecorationColor: 'red', color:"white", textDecorationLine: 'line-through', textDecorationStyle: 'solid', alignItems:'flex-start'} 
+                        {
+                            textDecorationColor: 'red',
+                            textDecorationLine: 'line-through', 
+                            alignItems:'flex-start'
+                        } 
                         : 
                         {alignItems:'flex-start'}
                     }
@@ -221,7 +157,7 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
                 <ListItemIcon>
                     <ListItemText secondary={resumeTime} />
                     {userEpisode.current_time > 0 ? 
-                        <span className="material-icons" onClick={()=>updateUserEpisode(userEpisode.id, 0, null)}>
+                        <span className="material-icons" onClick={()=>dbUserEpisode(title, podcastId, 0, null)}>
                         delete_outline
                         </span>
                     :
