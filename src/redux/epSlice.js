@@ -20,12 +20,6 @@ export const epSlice = createSlice({
             return {
                 ...state, 
                 userEpisodes: newUserEpisodes
-                // userEpisodes: [...state.userEpisodes.map(ep => {
-                //     if(ep.id === action.payload.id){
-                //         return action.payload
-                //     }
-                //     return ep
-                // })]
             }
         }
     }

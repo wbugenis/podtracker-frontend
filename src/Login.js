@@ -9,9 +9,9 @@ const Login = ({setUser, setMessage}) =>{
     const handleLogin = (event) =>{
         event.preventDefault();
 
-        let fetchUrl = url + 'login';
+        // let fetchUrl = url + '/login';
 
-        fetch(fetchUrl, {
+        fetch(`${url}/login`, {
             method: "POST",
             headers: {
               'Content-Type':'application/json',

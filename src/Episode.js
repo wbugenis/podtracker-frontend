@@ -45,7 +45,6 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
         const myEp = userEpisodes.find(userEpisode => userEpisode.title === title);
         
         if (myEp){
-            console.log(myEp.title, myEp.listened);
             setUserEpisode(myEp);
             manageTime(myEp.current_time);
         }
@@ -79,8 +78,8 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
             body = {...body, listened: listened };
         };
 
-        let fetchUrl = url + `user_episodes/save`;
-        fetch(fetchUrl, {
+        // let fetchUrl = url + `/user_episodes/save`;
+        fetch(`${url}/user_episodes/save`, {
             method: 'POST',
             headers: {
                 'Content-Type':'application/json',
@@ -89,10 +88,7 @@ const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
             body: JSON.stringify(body)
         })
             .then(r => r.json())
-            .then(returnedEp => {
-                console.log(returnedEp)
-                dispatch(updateUserEpisodes(returnedEp))
-            })
+            .then(returnedEp => dispatch(updateUserEpisodes(returnedEp)))
     }
 
     //Handles click of play button on an episode

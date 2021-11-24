@@ -15,8 +15,8 @@ const AddPodcast = ({user, setMessage}) => {
         };
 
         //Post new podcast subscription to DB for the logged in user
-        let fetchUrl = url + 'subscriptions'
-        fetch(fetchUrl, {
+        // let fetchUrl = url + '/subscriptions';
+        fetch(`${url}/subscriptions`, {
             method: "POST", 
             headers: {
                 'Content-Type':"application/json",

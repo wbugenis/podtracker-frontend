@@ -9,8 +9,8 @@ const Signup = ({setUser}) =>{
 
     const handleSignup = (event) =>{
         event.preventDefault();
-        let fetchUrl = url + 'users';
-        fetch(fetchUrl, {
+        // let fetchUrl = url + '/users';
+        fetch(`${url}/users`, {
             method: "POST",
             headers: {
               'Content-Type':'application/json',

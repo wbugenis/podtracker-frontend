@@ -13,17 +13,17 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
     const dispatch = useDispatch();
 
     //Retrieve all of user's subscribed podcasts
-    const subsUrl = url + 'user/' + user.id + '/subscriptions';
+    // const subsUrl = url + '/user/' + user.id + '/subscriptions';
     useEffect(()=> {
-        fetch(subsUrl)
+        fetch(`${url}/user/${user.id}/subscriptions`)
             .then(r => r.json())
             .then(subscriptions => {
                 setSubscriptions(subscriptions);
             })
 
     //Retrieve all of user's userepisodes
-    let fetchUserEps = url + 'user_episodes/all/' + user.id;
-    fetch(fetchUserEps)
+    // let fetchUserEps = url + '/user/' + user.id + '/user_episodes'
+    fetch(`${url}/user/${user.id}/user_episodes`)
         .then(r => r.json())
         .then(userEps => dispatch(setUserEpisodes(userEps)))
 
@@ -42,8 +42,8 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
 
     //Unsubscribe from podcast
     const unsubscribe = (title, sub_id) => {
-        let fetchUrl = url + 'subscriptions/' + sub_id;
-        fetch(fetchUrl, {
+        // let fetchUrl = url + '/subscriptions/' + sub_id;
+        fetch(`${url}/subscriptions/${sub_id}`, {
             method:'DELETE'
         })
             .then(()=> {

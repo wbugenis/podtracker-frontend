@@ -25,8 +25,8 @@ const Podcast = ({ user, unsubscribe, podcast, sub_id, togglePodcastDisplay}) =>
     useEffect(() => {
         
         //Get object of parsed XML feed
-        let fetchFeed = url + 'podcasts/' + id + '/feed';
-        fetch(fetchFeed)
+        // let fetchFeed = url + '/podcasts/' + id + '/feed';
+        fetch(`${url}/podcasts/${id}/feed`)
             .then(r => r.json())
             .then(feed => {
                 const eps = [];
