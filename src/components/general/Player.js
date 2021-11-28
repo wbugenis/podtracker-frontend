@@ -1,7 +1,8 @@
-import React from "react"
-import { MediaPlayerControls } from '@cassette/player'
-import { usePlayerContext } from '@cassette/hooks'
-import '@cassette/player/dist/css/cassette-player.css'
+import React from "react";
+
+import { MediaPlayerControls } from '@cassette/player';
+import { usePlayerContext } from '@cassette/hooks';
+import '@cassette/player/dist/css/cassette-player.css';
 //https://github.com/benwiley4000/cassette#readme
 
 //Custom Cassette button to allow skipping 10 seconds backward
@@ -64,7 +65,7 @@ const Player = () => {
             () => <FwdSkip />,
             'volume',
             'progress',
-          ]} 
+          ]}
         />    
       </div>
     )

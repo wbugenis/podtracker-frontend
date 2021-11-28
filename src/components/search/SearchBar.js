@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 
+//Searchbar component for executing iTunes search
 const SearchBar = ({handleSearch}) => {
     const [search, setSearch] = useState("");
 

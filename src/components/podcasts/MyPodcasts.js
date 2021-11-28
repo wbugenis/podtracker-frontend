@@ -4,7 +4,7 @@ import PodcastInfo from "./PodcastInfo";
 import Grid from '@material-ui/core/Grid';
 
 import { useDispatch} from 'react-redux';
-import { setUserEpisodes } from './redux/epSlice';
+import { setUserEpisodes } from '../../redux/epSlice';
 
 const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscriptions}) => {
     const url = process.env.REACT_APP_RAILS_URL;
@@ -91,9 +91,7 @@ const MyPodcasts = ({user, setPlaylist, setMessage, subscriptions, setSubscripti
                             maxWidthXs:'245px',
                             display: podcastDisplay,
                             flexBasis:'unset',
-                            flexWrap:'nowrap', 
-                            width:'1000px', 
-                            margin:'0px', 
+                            flexWrap:'nowrap',
                             padding:'5px 10px 0px 10px'    
                         }}
                     >

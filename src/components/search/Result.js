@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 
+//Search result component from iTunes search
 const Result = ({user, result, setMessage, subscriptions}) => {
     const url = process.env.REACT_APP_RAILS_URL;
     const reactURL = process.env.REACT_APP_FRONT_URL;

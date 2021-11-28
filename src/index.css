@@ -16,22 +16,17 @@ html{
   left: 0
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
 .app {
   position: sticky;
   top: 0;
-  width:1200px;
+  width:100vw;
   height:100vh;
   display: grid;
   grid-template-areas: 
     "logo player"
     "nav content";
   grid-template-columns: 210px auto;
-  grid-template-rows: 65px auto;
+  grid-template-rows: 55px auto;
 }
 
 aside {
@@ -75,11 +70,17 @@ h4 {
 }
 
 #player-div {
+  width:70vw;
+  min-width: 600px;
   grid-area: player;
   position:sticky;
   top:0;
   z-index:2;
   background-color:none;
+}
+
+.cassette__control_bar{
+  border-radius: 15px;
 }
 
 .welcome-div {
@@ -90,7 +91,7 @@ h4 {
   background-color: rgba(0,0,0,0.5);
   width: 300px;
   height: 300px;
-  padding:10px;
+  padding: 10px;
   border-radius: 25px;
 }
 
@@ -98,9 +99,11 @@ h4 {
   background-color: rgba(0,0,0,0.5);
   border: 2px solid;
   border-radius: 25px;
-  margin: 10px 10px 10px 10px;
-  padding: 10px 10px 10px 10px;
+  margin: 1px;
+  padding: 10px;
   height:300px;
+  width: 70vw;
+  min-width: 600px;
   overflow-x: auto;
 }
 
@@ -109,7 +112,7 @@ h4 {
   height: 175px;
 }
 
-.podcast-div{
+.podcast-div {
   border: 1px solid;
   text-align: center;
   border-radius: 25px;
@@ -117,10 +120,6 @@ h4 {
   height: 290px;
   min-width: 220px;
   z-index: 1;
-}
-
-.episode-container {
-  height: auto;
 }
 
 .result-div {
@@ -131,6 +130,7 @@ h4 {
 .material-icons {
   color:white;
 }
+
 .material-icons:hover{
   color:forestgreen;
   cursor: pointer;

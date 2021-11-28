@@ -1,3 +1,4 @@
+//Returns time in readable format instead of seconds
 const prettyTime = (timeStr) => {
     if (timeStr){
         timeStr = timeStr.toString();

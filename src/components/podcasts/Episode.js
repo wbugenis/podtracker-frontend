@@ -12,7 +12,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import prettyTime from './prettyTime';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { updateUserEpisodes } from './redux/epSlice';
+import { updateUserEpisodes } from '../../redux/epSlice';
 
 const Episode = ({user, episode, podcastId, setPlaylist, setMessage}) => {
     const url = process.env.REACT_APP_RAILS_URL;

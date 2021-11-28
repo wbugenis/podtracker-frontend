@@ -1,7 +1,9 @@
 import React from "react";
-import Result from "./Result";
 import { Grid } from "@material-ui/core";
 
+import Result from "./Result";
+
+//Holds search results from iTunes search
 const ResultsContainer = ({user, results, setMessage, subscriptions}) => {
     const resultsArr = results.map(result=> 
         <Result 

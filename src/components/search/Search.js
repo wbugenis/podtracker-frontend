@@ -1,7 +1,9 @@
 import React, {useState} from "react";
+
 import SearchBar from "./SearchBar";
 import ResultsContainer from "./ResultsContainer";
 
+//Search page component
 const Search = ({user, setMessage, subscriptions}) => {
     const url = process.env.REACT_APP_RAILS_URL;
     const [searchTerm, setSearchTerm] = useState("");

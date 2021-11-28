@@ -5,7 +5,7 @@ import { Grid } from "@material-ui/core";
 import prettyTime from './prettyTime';
 
 import { useSelector, useDispatch} from 'react-redux';
-import { setDisplay, setInfo, setEpisodeList } from "./redux/podSlice";
+import { setDisplay, setInfo, setEpisodeList } from "../../redux/podSlice";
 
 const Podcast = ({ user, unsubscribe, podcast, sub_id, togglePodcastDisplay}) => {
     const url = process.env.REACT_APP_RAILS_URL;

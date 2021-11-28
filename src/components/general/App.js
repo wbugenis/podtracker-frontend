@@ -4,12 +4,12 @@ import { Snackbar, Fade } from '@material-ui/core';
 import { Alert } from '@material-ui/lab/';
 
 import Navbar from './Navbar';
-import Search from './Search';
-import MyPodcasts from './MyPodcasts';
+import Search from '../search/Search';
+import MyPodcasts from '../podcasts/MyPodcasts';
 import Login from './Login';
 import Signup from './Signup';
 import Player from './Player';
-import AddPodcast from './AddPodcast';
+import AddPodcast from '../podcasts/AddPodcast';
 
 import { PlayerContextProvider } from '@cassette/core';
 
